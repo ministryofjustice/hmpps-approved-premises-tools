@@ -40,7 +40,7 @@ if local_ui:
     local_resource(
         "local_ui",
         cmd="npm install",
-        serve_cmd="npm start",
+        serve_cmd="npm run start:dev",
         serve_dir=os.getenv("APPROVED_PREMISES_UI_PATH"),
         dir=os.getenv("APPROVED_PREMISES_UI_PATH"),
         resource_deps=["hmpps-auth"],
