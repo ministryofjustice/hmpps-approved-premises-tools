@@ -64,3 +64,5 @@ There is also a usable CRN: `X320741`
 ```bash
 ap-tools server stop
 ```
+
+This will stop all running `tilt` processes and tear down the entire stack.
