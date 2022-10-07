@@ -59,6 +59,29 @@ You will be able to log into the application at http://localhost:3000 with the f
 
 There is also a usable CRN: `X320741`
 
+##### Running local instances of the UI or API
+
+If you need to run local instances of either the UI or API (rather than serving them from the latest Docker images), you can run add `--local-ui` or `--local-api` flags to the `start` command like so:
+
+```bash
+ap-tools server start --local-ui
+```
+
+```bash
+ap-tools server start --local-api
+```
+
+```bash
+ap-tools server start --local-ui --local-api
+```
+
+Note: For this to work, you must have the path to your API / UI repos set as environment variables (e.g in your `.bashrc` file), i.e:
+
+```bash
+export APPROVED_PREMISES_UI_PATH=/full/path/to/your/repo
+export APPROVED_PREMISES_API_PATH=/full/path/to/your/repo
+```
+
 #### Stop Server
 
 ```bash

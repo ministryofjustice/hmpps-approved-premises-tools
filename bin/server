@@ -14,9 +14,9 @@ else
 fi
 
 if [ "$command" = "start" ]; then
-  "$(dirname "$0")/start-server" "$*"
+  "$(dirname "$0")/start-server" "$@"
 elif [ "$command" = "stop" ]; then
-  "$(dirname "$0")/stop-server" "$*"
+  "$(dirname "$0")/stop-server"
 else
   echo "Unknown command $command"
   exit 1
