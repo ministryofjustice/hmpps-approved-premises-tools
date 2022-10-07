@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if ! [ "$(command -v tilt)" ];then
+    echo "Tilt could not be found. Install with ``brew install tilt`` and try again"
+    exit
+fi
+
+"$(dirname "$0")/utils/launch-docker.sh"
+
+if [ -z "$1" ]; then
+  command="start"; shift
+else
+  command=$1
+fi
+
+if [ "$command" = "start" ]; then
+  "$(dirname "$0")/start-server" "$*"
+elif [ "$command" = "stop" ]; then
+  "$(dirname "$0")/stop-server" "$*"
+else
+  echo "Unknown command $command"
+  exit 1
+fi

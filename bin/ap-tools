@@ -1,0 +1,10 @@
+#!/bin/sh
+
+command=$1 ; shift
+
+if [ "$command" = "server" ]; then
+  "$(dirname "$0")/server" "$@"
+else
+  echo "Unknown command $1"
+  exit 1
+fi

@@ -1,0 +1,162 @@
+version: "3"
+services:
+  api:
+    image: quay.io/hmpps/hmpps-approved-premises-api:latest
+    container_name: approved-premises-api-dev
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      - SERVICES_COMMUNITY-API_BASE-URL=http://community-api:8080
+      - SERVICES_ASSESS-RISKS-AND-NEEDS-API_BASE-URL=http://hmpps-assess-risks-and-needs:8080
+      - SERVICES_HMPPS-TIER_BASE-URL=http://wiremock:8080
+      - SERVICES_PRISONS-API_BASE-URL=http://prison-api:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database/approved_premises_localdev
+      - SPRING_DATASOURCE_USERNAME=localdev
+      - SPRING_DATASOURCE_PASSWORD=localdev_password
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    ports:
+      - 8080:8080
+    depends_on:
+      database:
+        condition: service_healthy
+      hmpps-auth:
+        condition: service_healthy
+
+  frontend:
+    image: quay.io/hmpps/hmpps-approved-premises-ui:latest
+    container_name: approved-premises-ui-dev
+    environment:
+      - REDIS_HOST=approved-premises-redis-dev
+      - REDIS_PORT=6379
+      - REDIS_TLS_ENABLED=false
+      - REDIS_AUTH_TOKEN=
+      - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9091/auth
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      - API_CLIENT_ID=approved-premises-ui
+      - API_CLIENT_SECRET=clientsecret
+      - SYSTEM_CLIENT_ID=approved-premises-ui
+      - SYSTEM_CLIENT_SECRET=clientsecret
+      - SESSION_SECRET=app-insecure-default-session
+      - NODE_ENV=development
+      - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/verification
+      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
+      - INGRESS_URL=http://localhost:3000
+    ports:
+      - 3000:3000
+    entrypoint: "node dist/server.js | bunyan"
+    depends_on:
+      hmpps-auth:
+        condition: service_healthy
+
+  database:
+    image: "postgres"
+    container_name: approved-premises-postgres-dev
+    environment:
+      - POSTGRES_USER=localdev
+      - POSTGRES_PASSWORD=localdev_password
+      - POSTGRES_DB=approved_premises_localdev
+    volumes:
+      - database-data-development:/var/lib/postgresql/data/
+    ports:
+      - "5431:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  hmpps-auth:
+    image: quay.io/hmpps/hmpps-auth:latest
+    container_name: hmpps-auth
+    ports:
+      - "9091:8080"
+      - "5001:5005"
+    entrypoint: "java ${JAVA_OPTS} -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
+    healthcheck:
+      test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
+      - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
+      - DELIUS_ENABLED=true
+      - DELIUS_ENDPOINT_URL=http://community-api:8080
+      - DELIUS_ENDPOINT_TIMEOUT=1s
+      - DELIUS_CLIENT_CLIENT-ID=delius-auth-api-client
+      - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
+      - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
+    depends_on:
+      community-api:
+        condition: service_healthy
+
+  community-api:
+    image: quay.io/hmpps/community-api:latest
+    container_name: community-api
+    ports:
+      - "9590:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-nv", "-t1", "--spider", "http://localhost:8080/api/health"]
+    volumes:
+      - ./seed/community-api:/seed
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
+      - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
+      - SPRING_FLYWAY_LOCATIONS=classpath:/db/schema,classpath:/db/data,filesystem:/seed
+
+  hmpps-assess-risks-and-needs:
+    image: quay.io/hmpps/hmpps-assess-risks-and-needs
+    container_name: assess-risks-and-needs
+    ports:
+      - "9580:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=oasys-rsr,dev
+      - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+      - ASSESSMENT-API_BASE-URL=http://wiremock:8080
+      - COMMUNITY-API_BASE-URL=http://community-api:8080
+
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: wiremock
+    ports:
+      - "9004:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+
+  prison-api:
+    image: quay.io/hmpps/prison-api:latest
+    container_name: prison-api
+    ports:
+      - "9570:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
+      - SPRING_DATASOURCE_URL=jdbc:hsqldb:file:/nomis-db/nomisdb;sql.syntax_ora=true;get_column_name=false;shutdown=false;sql.nulls_first=false;sql.nulls_order=false;hsqldb.lock_file=false
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+      - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
+    volumes:
+      - ./nomis-db:/nomis-db
+
+  redis:
+    image: "bitnami/redis:5.0"
+    container_name: approved-premises-redis-dev
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=frontend:approved-premises-redis-dev:6379:0,api-cache:approved-premises-redis-dev:6379:5
+    ports:
+      - "7341:8081"
+
+volumes:
+  database-data-development:

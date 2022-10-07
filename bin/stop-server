@@ -1,0 +1,3 @@
+#!/bin/sh
+
+killall tilt && tilt down -f "$(dirname "$0")/../tiltfile"

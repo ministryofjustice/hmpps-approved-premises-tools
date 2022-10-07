@@ -1,0 +1,19 @@
+docker_compose("./docker-compose.yml")
+
+resources = [
+    "api",
+    "frontend",
+    "hmpps-auth",
+    "community-api",
+    "hmpps-assess-risks-and-needs",
+    "wiremock",
+    "database",
+    "prison-api",
+    "redis",
+    "hmpps-auth",
+    "redis",
+    "community-api",
+]
+
+config.clear_enabled_resources()
+config.set_enabled_resources(resources)

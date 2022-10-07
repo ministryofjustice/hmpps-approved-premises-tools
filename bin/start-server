@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
+tilt up -f "$(dirname "$0")/../tiltfile" > /dev/null 2>&1 &
+until lsof -i:3000 > /dev/null; do
+  printf '.'
+  sleep 2
+done
+
+echo ""
+echo "Stack running! You will be able to log into the application at http://localhost:3000 with the following:"
+echo ""
+echo "Username: JimSnowLdap"
+echo "Password: secret"
+echo ""
+echo "There is also a usable CRN: X320741"
+
+exit 0
