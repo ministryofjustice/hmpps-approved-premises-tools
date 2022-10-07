@@ -1,7 +1,38 @@
 #!/bin/sh
 
+args=""
+
+while [ "$1" != "" ];
+do
+   case $1 in
+    --local-ui)
+        if [ -z "${APPROVED_PREMISES_UI_PATH}" ]; then
+          echo "Path to local UI not found, please ensure you have set the APPROVED_PREMISES_UI_PATH environment variable and try again"
+          exit 1
+        fi
+        args="$args --local-ui"
+        ;;
+    --local-api)
+        if [ -z "${APPROVED_PREMISES_API_PATH}" ]; then
+          echo "Path to local API not found, please ensure you have set the APPROVED_PREMISES_API_PATH environment variable and try again"
+          exit 1
+        fi
+        args="$args --local-api"
+        ;;
+  esac
+  shift
+done
+
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
-tilt up -f "$(dirname "$0")/../tiltfile" > /dev/null 2>&1 &
+
+cmd="tilt up -f $(dirname "$0")/../tiltfile"
+
+if [ ${#args} -ge 0 ]; then
+  cmd="$cmd -- $args"
+fi
+
+$cmd > /dev/null 2>&1 &
+
 until lsof -i:3000 > /dev/null; do
   printf '.'
   sleep 2
