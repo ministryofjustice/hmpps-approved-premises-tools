@@ -54,8 +54,8 @@ Server logs will then be avaiable in the browser at http://localhost:10350
 
 You will be able to log into the application at http://localhost:3000 with the following:
 
-Username: JimSnowLdap
-Password: secret
+* **Username:** `JimSnowLdap`
+* **Password:** `secret`
 
 There is also a usable CRN: `X320741`
 
