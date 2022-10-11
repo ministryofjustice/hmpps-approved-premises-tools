@@ -33,7 +33,7 @@ fi
 
 $cmd > /dev/null 2>&1 &
 
-until lsof -i:3000 > /dev/null; do
+until lsof -i:9590 > /dev/null; do
   printf '.'
   sleep 2
 done
