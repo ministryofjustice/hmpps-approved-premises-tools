@@ -19,7 +19,6 @@ resources = [
     "prison-api",
     "redis",
     "hmpps-auth",
-    "community-api",
 ]
 
 if local_api:
