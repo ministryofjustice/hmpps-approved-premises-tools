@@ -17,11 +17,6 @@ services:
       - SPRING_REDIS_PORT=6379
     ports:
       - 8080:8080
-    depends_on:
-      database:
-        condition: service_healthy
-      hmpps-auth:
-        condition: service_healthy
 
   frontend:
     image: quay.io/hmpps/hmpps-approved-premises-ui:latest
@@ -45,9 +40,6 @@ services:
     ports:
       - 3000:3000
     entrypoint: "node dist/server.js | bunyan"
-    depends_on:
-      hmpps-auth:
-        condition: service_healthy
 
   database:
     image: "postgres"
@@ -85,17 +77,12 @@ services:
       - DELIUS_CLIENT_CLIENT-ID=delius-auth-api-client
       - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
-    depends_on:
-      community-api:
-        condition: service_healthy
 
   community-api:
     image: quay.io/hmpps/community-api:latest
     container_name: community-api
     ports:
       - "9590:8080"
-    healthcheck:
-      test: ["CMD", "wget", "-nv", "-t1", "--spider", "http://localhost:8080/api/health"]
     volumes:
       - ./seed/community-api:/seed
     environment:
