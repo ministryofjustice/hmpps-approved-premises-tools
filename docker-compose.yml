@@ -64,6 +64,8 @@ services:
     ports:
       - "9091:8080"
       - "5001:5005"
+    volumes:
+      - ./seed/hmpps-auth:/seed
     entrypoint: "java ${JAVA_OPTS} -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
@@ -77,6 +79,7 @@ services:
       - DELIUS_CLIENT_CLIENT-ID=delius-auth-api-client
       - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
+      - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
 
   community-api:
     image: quay.io/hmpps/community-api:latest
