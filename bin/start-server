@@ -33,7 +33,7 @@ fi
 
 $cmd > /dev/null 2>&1 &
 
-until lsof -i:9590 > /dev/null; do
+until curl http://localhost:9590/api/health > /dev/null 2>&1; do
   printf '.'
   sleep 2
 done
