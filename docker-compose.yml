@@ -116,7 +116,7 @@ services:
       - ./wiremock:/home/wiremock
 
   prison-api:
-    image: quay.io/hmpps/prison-api:latest
+    image: quay.io/hmpps/prison-api:2022-10-24.14293.29a4440
     container_name: prison-api
     ports:
       - "9570:8080"
