@@ -89,11 +89,13 @@ services:
       - "9590:8080"
     volumes:
       - ./seed/community-api:/seed
+      - ./community-api-db:/community-api-db
     environment:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/community-api-db/community-ap-db;MODE=Oracle;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9092
       - SPRING_FLYWAY_LOCATIONS=classpath:/db/schema,classpath:/db/data,filesystem:/seed
 
   hmpps-assess-risks-and-needs:
