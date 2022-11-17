@@ -11,6 +11,7 @@ services:
       - SERVICES_HMPPS-TIER_BASE-URL=http://wiremock:8080
       - SERVICES_PRISONS-API_BASE-URL=http://prison-api:8080
       - SERVICES_CASE-NOTES_BASE-URL=http://wiremock:8080/case-notes
+      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://wiremock:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/approved_premises_localdev
       - SPRING_DATASOURCE_USERNAME=localdev
       - SPRING_DATASOURCE_PASSWORD=localdev_password
