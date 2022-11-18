@@ -10,11 +10,11 @@
     },
     "status": 200,
     "jsonBody": {
-      "assessmentPk": 1310103,
+      "assessmentId": 1310103,
       "assessmentType": "LAYER3",
       "dateCompleted": null,
       "assessorSignedDate": null,
-      "initiationDate": "2022-11-02T15:17:29",
+      "initiationDate": "2022-11-02T15:17:29Z",
       "assessmentStatus": "OPEN",
       "superStatus": "WIP",
       "limitedAccessOffender": false,
