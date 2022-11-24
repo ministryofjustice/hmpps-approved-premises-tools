@@ -1,0 +1,40 @@
+{
+  "id": "f00d56db-2ac5-4bc4-98e1-2007fa9b9870",
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/risk-assessment/(.*)"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": {
+      "assessmentId": 1310103,
+      "assessmentType": "LAYER3",
+      "dateCompleted": null,
+      "assessorSignedDate": null,
+      "initiationDate": "2022-11-02T15:17:29",
+      "assessmentStatus": "OPEN",
+      "superStatus": "WIP",
+      "limitedAccessOffender": false,
+      "riskAssessment": {
+        "currentOffenceDetails":  "[R6.1 FA1] Mr Smith was released on licence from custody on 12/7/2018.  Between then and 1/8/2018 Mr Smith approached...",
+        "currentWhereAndWhen": "[R6.1 FA2] Between 12/7/2018 - 31/7/2018, initially victim in the street putting bins out...",
+        "currentHowDone": "[R6.1 FA3] On the first occasion, threatened child victim to steal from his mother...",
+        "currentWhoVictims": "[R6.1 FA4] Mark Jones (14) and his mother Julie Jones",
+        "currentAnyoneElsePresent":  "[R6.1 FA5] On the second occasion another offender is seen, but s/he does not enter the property.",
+        "currentWhyDone": "[R6.1 FA6] In the past Mr Smith's offending has followed a consistent pattern of stealing to fund his drug habit...",
+        "currentSources": "[R6.1 FA7] CPS and all doc on Digital Court System.",
+        "previousWhatDone": "[R6.2 FA8] Mr Smith is assessed to have committed a number of offences that are considered to have crossed the Threshold of serious harm...",
+        "previousWhereAndWhen": "[R6.2 FA9] Bolton and Bury Districts.",
+        "previousHowDone": "[R6.2 FA10] The nature of many of previous convictions include, forethought, planning, and committed...",
+        "previousWhoVictims": "[R6.2 FA11] Stranger Victims ranged from youths of a similar age to self and an elderly female victim",
+        "previousAnyoneElsePresent": "[R6.2 FA12] No indication that others were involved.",
+        "previousWhyDone": "[R6.2 FA13] A number of significant life events has served to de-stabilise Mr Moore, including  the adoption of his son...",
+        "previousSources": "[R6.2 FA14] OASys, CPS."
+      }
+    }
+  }
+}
+
