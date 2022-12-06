@@ -18,6 +18,7 @@
       "assessmentStatus": "OPEN",
       "superStatus": "WIP",
       "limitedAccessOffender": false,
+      "lastUpdatedDate": "2022-11-29T10:37:22Z",
       "riskAssessment": {
         "currentOffenceDetails":  "[R6.1 FA1] Mr Smith was released on licence from custody on 12/7/2018.  Between then and 1/8/2018 Mr Smith approached...",
         "currentWhereAndWhen": "[R6.1 FA2] Between 12/7/2018 - 31/7/2018, initially victim in the street putting bins out...",
