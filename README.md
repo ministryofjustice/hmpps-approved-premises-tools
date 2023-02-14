@@ -6,6 +6,7 @@ A suite of tools to help with development on the HMPPS Approved Premises project
 
 * Docker
 * [Tilt](https://tilt.dev/)
+* [YQ](https://mikefarah.gitbook.io/yq/)
 
 ## Getting started
 
@@ -89,3 +90,13 @@ ap-tools server stop
 ```
 
 This will stop all running `tilt` processes and tear down the entire stack.
+
+#### Refreshing containers
+
+Sometimes the stack will fail to come up cleanly, or you might want
+to get the latest version(s) of the containers. To do this, you
+can add a `--refresh` flag like so:
+
+```bash
+ap-tools server start --refresh
+```

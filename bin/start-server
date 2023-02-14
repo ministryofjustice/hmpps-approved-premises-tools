@@ -19,6 +19,8 @@ do
         fi
         args="$args --local-api"
         ;;
+    --refresh)
+      "$(dirname "$0")/utils/refresh-containers.sh"
   esac
   shift
 done
