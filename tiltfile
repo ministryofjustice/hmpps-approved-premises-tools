@@ -19,6 +19,7 @@ resources = [
     "prison-api",
     "redis",
     "hmpps-auth",
+    "localstack"
 ]
 
 if local_api:
