@@ -4,6 +4,16 @@ command=$1 ; shift
 
 if [ "$command" = "server" ]; then
   "$(dirname "$0")/server" "$@"
+elif [ "$command" = "--help" ]; then
+  echo "Usage: ap-tools <command>"
+  echo "Commands:"
+  echo "  server start"
+  echo "  server stop"
+  echo "Options:"
+  echo "  --local-ui"
+  echo "  --local-api"
+  echo "  --refresh"
+  
 else
   echo "Unknown command $1"
   exit 1
