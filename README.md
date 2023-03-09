@@ -7,6 +7,7 @@ A suite of tools to help with development on the HMPPS Approved Premises project
 * Docker
 * [Tilt](https://tilt.dev/)
 * [YQ](https://mikefarah.gitbook.io/yq/)
+* [IntelliJ](https://www.jetbrains.com/idea/)
 
 ## Getting started
 
@@ -15,6 +16,12 @@ A suite of tools to help with development on the HMPPS Approved Premises project
 ```bash
 git clone git@github.com:ministryofjustice/hmpps-approved-premises-tools.git
 ```
+
+### (Recommended) Install and use IntelliJ
+IntelliJ is an IDE made for Java/Kotlin. It can handle dependancy downloads for Gradle 
+among other things so it's recommended to install and use it. Once downloaded open each
+project within it to download and check for any required dependancies.
+
 
 ### (Optional) Add `ap-tools` to your PATH
 
