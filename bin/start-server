@@ -43,7 +43,7 @@ done
 echo ""
 echo "Stack running! You will be able to log into the application at http://localhost:3000 with the following:"
 echo ""
-echo "Username: JimSnowLdap"
+echo "Username: JIMSNOWLDAP"
 echo "Password: secret"
 echo ""
 echo "There is also a usable CRN: X320741"
