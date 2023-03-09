@@ -18,6 +18,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=localdev_password
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
+      - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
     ports:
       - 8080:8080
 
