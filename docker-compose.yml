@@ -46,7 +46,7 @@ services:
     entrypoint: "node dist/server.js | bunyan"
 
   database:
-    image: "postgres"
+    image: "postgis/postgis"
     container_name: approved-premises-postgres-dev
     environment:
       - POSTGRES_USER=localdev
