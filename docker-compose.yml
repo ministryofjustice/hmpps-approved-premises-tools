@@ -19,6 +19,7 @@ services:
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
       - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
+      - SEED_FILE-PREFIX=/tmp/seed
     ports:
       - 8080:8080
 
