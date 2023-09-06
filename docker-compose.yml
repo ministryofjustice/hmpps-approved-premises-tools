@@ -76,7 +76,8 @@ services:
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=dev,nomis,delius
+      - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
       - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
       - DELIUS_ENABLED=true
@@ -144,6 +145,20 @@ services:
     volumes:
       - ./nomis-db:/nomis-db
       - ./seed/prison-api:/seed
+
+  nomis-user-roles-api:
+    image: quay.io/hmpps/nomis-user-roles-api:latest
+    container_name: nomis-user-roles-api
+    depends_on:
+      - hmpps-auth
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=dev
+      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
 
   redis:
     image: "bitnami/redis:7.0.11"
