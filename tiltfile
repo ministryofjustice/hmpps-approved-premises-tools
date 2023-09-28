@@ -11,6 +11,7 @@ local_ui = cfg.get("local-ui", False)
 resources = [
     "api",
     "frontend",
+    "nomis-user-roles-api",
     "hmpps-auth",
     "community-api",
     "hmpps-assess-risks-and-needs",
