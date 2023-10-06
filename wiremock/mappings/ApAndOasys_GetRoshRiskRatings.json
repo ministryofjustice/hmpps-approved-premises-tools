@@ -1,5 +1,5 @@
 {
-  "id": "3945dfc8-a31b-4877-9eeb-5ae391e8d6e1",
+  "id": "1112984a-9435-4a75-b0e1-30c6b4caf6d6",
   "request": {
     "method": "GET",
     "urlPathPattern": "/rosh/(.*)"
@@ -20,15 +20,15 @@
       "limitedAccessOffender": false,
       "lastUpdatedDate": "2022-11-29T10:37:22Z",
       "rosh": {
-        "riskChildrenCommunity": "Medium",
-        "riskPublicCommunity": "High",
-        "riskKnownAdultCommunity": "High",
-        "riskStaffCommunity": "Low",
-        "riskChildrenCustody": "Low",
-        "riskPublicCustody": "Low",
-        "riskKnownAdultCustody": "Low",
-        "riskStaffCustody": "Low",
-        "riskPrisonersCustody": "Low"
+        "riskChildrenCommunity": "MEDIUM",
+        "riskPublicCommunity": "HIGH",
+        "riskKnownAdultCommunity": "HIGH",
+        "riskStaffCommunity": "LOW",
+        "riskChildrenCustody": "LOW",
+        "riskPublicCustody": "LOW",
+        "riskKnownAdultCustody": "LOW",
+        "riskStaffCustody": "LOW",
+        "riskPrisonersCustody": "LOW"
       }
     }
   }
