@@ -81,7 +81,7 @@ services:
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
       - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
       - DELIUS_ENABLED=true
-      - DELIUS_ENDPOINT_URL=http://community-api:8080
+      - DELIUS_ENDPOINT_URL=http://wiremock:8080
       - DELIUS_ENDPOINT_TIMEOUT=1s
       - DELIUS_CLIENT_CLIENT-ID=delius-auth-api-client
       - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
