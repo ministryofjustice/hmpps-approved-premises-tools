@@ -152,7 +152,7 @@ services:
     depends_on:
       - hmpps-auth
     ports:
-      - "8081:8080"
+      - "9575:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
     environment:
