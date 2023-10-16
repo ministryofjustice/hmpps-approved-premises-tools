@@ -41,10 +41,12 @@ until curl http://localhost:9590/api/health > /dev/null 2>&1; do
 done
 
 echo ""
-echo "Stack running! You will be able to log into the application at http://localhost:3000 with the following:"
+echo "Stack running! You will be able to log into the application at http://localhost:3000 with the following Delius user:"
 echo ""
 echo "Username: JIMSNOWLDAP"
 echo "Password: secret"
+echo ""
+echo "or Nomis user: POM_USER/password123456"
 echo ""
 echo "There is also a usable CRN: X320741"
 
