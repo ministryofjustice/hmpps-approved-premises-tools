@@ -36,7 +36,6 @@ if local_api:
     resources.append("local_api")
 
 if local_ui:
-    resources.remove("frontend")
     local_resource(
         "local_ui",
         cmd="npm install",

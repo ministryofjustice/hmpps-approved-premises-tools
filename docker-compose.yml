@@ -25,7 +25,7 @@ services:
       - 8080:8080
 
   frontend:
-    image: quay.io/hmpps/hmpps-approved-premises-ui:latest
+    image: quay.io/hmpps/hmpps-temporary-accommodation-ui:latest
     container_name: approved-premises-ui-dev
     environment:
       - REDIS_HOST=approved-premises-redis-dev
@@ -42,7 +42,8 @@ services:
       - NODE_ENV=development
       - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/verification
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
-      - INGRESS_URL=http://localhost:3000
+      - FIRST_INGRESS_URL=http://localhost:3000
+      - SECOND_INGRESS_URL=http://127.0.0.2:3002
     ports:
       - 3000:3000
     entrypoint: "node dist/server.js | bunyan"
@@ -77,7 +78,7 @@ services:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
+      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=localhost:3000,localhost:3002,127.0.0.2:3002
       - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
       - DELIUS_ENABLED=true
       - DELIUS_ENDPOINT_URL=http://community-api:8080

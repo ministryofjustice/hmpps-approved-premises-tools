@@ -1,0 +1,3 @@
+DELETE FROM oauth_client_details where client_id='approved-premises-ui';
+INSERT INTO oauth_client_details (client_id, access_token_validity, additional_information, authorities, authorized_grant_types, autoapprove, client_secret, refresh_token_validity, resource_ids, scope, web_server_redirect_uri)
+VALUES ('approved-premises-ui', 12000, '{"jwtFields":"-name"}', null, 'authorization_code', 'read,write', '$2a$10$a5WJN/AZc7Nq3rFoy5GOQ.avY.opPq/RaF59TXFaInt0Jxp6NV94a',43200, null, 'read,write', 'http://localhost:3000/sign-in/callback,http://localhost:3000,http://approved-premises-ui:3000/sign-in/callback,http://approved-premises-ui:3000,http://127.0.0.2:3002,http://127.0.0.2:3002/sign-in/callback');
