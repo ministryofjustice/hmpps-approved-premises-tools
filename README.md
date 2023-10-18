@@ -74,6 +74,13 @@ e.g.
 - **Username:** `POM_USER`
 - **Password:** `password123456`
 
+##### External CAS2 Assessor
+CAS2 has a group of external users from the NACRO organisation who are granted the
+`CAS2_ASSESSOR` role and who have access to submitted CAS2 applications only.
+
+- **Username:** `CAS2_ASSESSOR_USER`
+- **Password:** `password123456`
+
 ##### CRNs
 
 There is also a usable CRN: `X320741`

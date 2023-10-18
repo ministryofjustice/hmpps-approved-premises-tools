@@ -48,6 +48,8 @@ echo "Password: secret"
 echo ""
 echo "or Nomis user: POM_USER/password123456"
 echo ""
+echo "or external NACRO assessor: CAS2_ASSESSOR_USER/password123456"
+echo ""
 echo "There is also a usable CRN: X320741"
 
 exit 0
