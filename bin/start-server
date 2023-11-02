@@ -2,6 +2,9 @@
 
 args=""
 
+do_update=1
+do_refresh=0
+
 while [ "$1" != "" ];
 do
    case $1 in
@@ -20,10 +23,24 @@ do
         args="$args --local-api"
         ;;
     --refresh)
-      "$(dirname "$0")/utils/refresh-containers.sh"
+        do_refresh=1
+        ;;
+    --no-update)
+        do_update=0
+        ;;
   esac
   shift
 done
+
+if [ $do_update -gt 0 ]; then
+  if "$(dirname "$0")/utils/check-for-update.sh"; then
+    do_refresh=1
+  fi
+fi
+
+if [ $do_refresh -gt 0 ]; then
+  "$(dirname "$0")/utils/refresh-containers.sh"
+fi
 
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
