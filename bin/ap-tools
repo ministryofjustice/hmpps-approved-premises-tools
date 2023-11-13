@@ -13,6 +13,7 @@ elif [ "$command" = "--help" ]; then
   echo "  --local-ui"
   echo "  --local-api"
   echo "  --refresh"
+  echo "  --no-update"
   
 else
   echo "Unknown command $1"
