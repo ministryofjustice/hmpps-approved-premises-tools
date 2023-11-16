@@ -15,6 +15,7 @@ resources = [
     "hmpps-manage-users-api",
     "hmpps-external-users-api",
     "auth-db",
+    "probation-offender-search",
     "hmpps-auth",
     "community-api",
     "hmpps-assess-risks-and-needs",

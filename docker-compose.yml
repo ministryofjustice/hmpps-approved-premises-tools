@@ -209,7 +209,7 @@ services:
       - POSTGRES_DB=auth-db
     healthcheck:
       test: pg_isready -d auth-db
-
+      
   redis:
     image: "bitnami/redis:7.0.11"
     container_name: approved-premises-redis-dev
@@ -231,12 +231,16 @@ services:
   localstack:
     image: localstack/localstack:1.3.1
     container_name: approved-premises-api-localstack
+    networks:
+      - hmpps
     ports:
       - "4566:4566"
       - "4571:4571"
+      - "9200:9200"
       - 8999:8080
     environment:
-      - SERVICES=sns,sqs
+      - SERVICES=sns,sqs,es
+      - ES_PORT_EXTERNAL=9200
       - DEBUG=${DEBUG- }
       - DOCKER_HOST=unix:///var/run/docker.sock
       - DEFAULT_REGION=eu-west-2
