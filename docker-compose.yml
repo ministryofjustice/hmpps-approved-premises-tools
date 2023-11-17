@@ -11,6 +11,7 @@ services:
       - SERVICES_HMPPS-TIER_BASE-URL=http://wiremock:8080
       - SERVICES_PRISONS-API_BASE-URL=http://prison-api:8080
       - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://wiremock:8080
+      - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://wiremock:8080
       - SERVICES_CASE-NOTES_BASE-URL=http://wiremock:8080/case-notes
       - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://wiremock:8080
       - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://wiremock:8080
