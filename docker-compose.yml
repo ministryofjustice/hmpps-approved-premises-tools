@@ -76,7 +76,7 @@ services:
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
-      - SPRING_PROFILES_ACTIVE=dev,nomis,delius
+      - SPRING_PROFILES_ACTIVE=dev,nomis,delius,local-postgres
       - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
       - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
@@ -87,6 +87,7 @@ services:
       - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
       - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth-db
 
   community-api:
     image: quay.io/hmpps/community-api:latest
@@ -160,6 +161,54 @@ services:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
+
+  hmpps-manage-users-api:
+      image: quay.io/hmpps/hmpps-manage-users-api:latest
+      container_name: hmpps-manage-users-api
+      depends_on:
+        - hmpps-auth
+      ports:
+        - "9560:8096"
+      healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:8096/health" ]
+      environment:
+        - SERVER_PORT=8096
+        - HMPPS_AUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+        - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
+        - SPRING_PROFILES_ACTIVE=dev
+        - EXTERNAL_USERS_ENDPOINT_URL=http://hmpps-external-users-api:8098
+        - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
+        - AUTHORIZATION_SERVER_TOKEN_ENDPOINT_URL=http://hmpps-auth:8080/auth/oauth/token
+
+  hmpps-external-users-api:
+    image: quay.io/hmpps/hmpps-external-users-api:latest
+    container_name: hmpps-external-users-api
+    depends_on:
+      - auth-db
+      - hmpps-auth
+    ports:
+      - "9565:8098"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8098/health/ping"]
+    environment:
+      - SERVER_PORT=8098
+      - SPRING_PROFILES_ACTIVE=dev,local-postgres
+      - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
+      - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
+      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
+
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin_password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=auth-db
+    healthcheck:
+      test: pg_isready -d auth-db
 
   redis:
     image: "bitnami/redis:7.0.11"
