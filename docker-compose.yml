@@ -106,6 +106,37 @@ services:
       - SPRING_FLYWAY_LOCATIONS=classpath:/db/schema,classpath:/db/data,filesystem:/seed
       - ALFRESCO_BASEURL=http://wiremock:8080/alfresco
 
+  probation-offender-search:
+    image: quay.io/hmpps/probation-offender-search:latest
+    container_name: probation-offender-search
+    depends_on:
+      - opensearch
+    ports:
+      - "8084:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=opensearch,dev
+      - COMMUNITY_ENDPOINT_URL=http://community-api:8080
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
+
+
+  opensearch:
+    container_name: opensearch
+    image: opensearchproject/opensearch:2.5.0
+    environment:
+      - node.name=opensearch
+      - cluster.name=probation-search-cluster
+      - discovery.type=single-node
+      - http.publish_host=localhost
+      - http.publish_port=9200
+      - bootstrap.memory_lock=true
+      - plugins.security.disabled=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+        - "9200:9200"
+
   hmpps-assess-risks-and-needs:
     image: quay.io/hmpps/hmpps-assess-risks-and-needs
     container_name: assess-risks-and-needs
