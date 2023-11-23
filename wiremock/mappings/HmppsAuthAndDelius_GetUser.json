@@ -5,16 +5,15 @@
     "urlPattern": "/user/.*"
   },
   "response": {
-    "transformers": ["response-template"],
     "status": 200,
     "jsonBody": {
       "userId": 2500077027,
       "username": "JIMSNOWLDAP",
-      "firstName": "Delius",
-      "surname": "Smith",
+      "firstName": "Jim",
+      "surname": "Snow",
       "email": "test@digital.justice.gov.uk",
       "enabled": true,
-      "roles": ["ROLE_PROBATION"]
+      "roles": ["ROLE_PROBATION", "ROLE_APPROVED_PREMISES_STAFF"]
     },
     "headers": {
       "Content-Type": "application/json"
