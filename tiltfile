@@ -17,6 +17,8 @@ resources = [
     "auth-db",
     "hmpps-auth",
     "community-api",
+    "probation-offender-search",
+    "opensearch",
     "hmpps-assess-risks-and-needs",
     "wiremock",
     "database",
