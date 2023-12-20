@@ -89,6 +89,12 @@ CAS2 has a group of NOMIS/DPS users who need to download management information.
 - **Username:** `CAS2_MI_USER`
 - **Password:** `password123456`
 
+###### CAS2 Admin
+CAS2 has a group of NOMIS/DPS users who can view all submitted applications.
+
+- **Username:** `CAS2_ADMIN_USER`
+- **Password:** `password123456`
+
 ##### CRNs
 
 There is also a usable CRN: `X320741`
