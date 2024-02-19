@@ -39,7 +39,7 @@ Add this path, plus '/bin' to the '$PATH' variable, by modifying either the ~/.b
 
 ```bash
 # ~/.bashrc or ~/.zshrc
-export PATH="$PATH:/<path-to-dalmatian-tools>/bin"
+export PATH="$PATH:/<path-to-approved-premises-tools>/bin"
 ```
 
 The easiest way for this to take effect is to close and open your terminal application
