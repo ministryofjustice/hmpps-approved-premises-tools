@@ -18,10 +18,10 @@ git clone git@github.com:ministryofjustice/hmpps-approved-premises-tools.git
 ```
 
 ### (Recommended) Install and use IntelliJ
-IntelliJ is an IDE made for Java/Kotlin. It can handle dependancy downloads for Gradle 
+
+IntelliJ is an IDE made for Java/Kotlin. It can handle dependancy downloads for Gradle
 among other things so it's recommended to install and use it. Once downloaded open each
 project within it to download and check for any required dependancies.
-
 
 ### (Optional) Add `ap-tools` to your PATH
 
@@ -39,7 +39,7 @@ Add this path, plus '/bin' to the '$PATH' variable, by modifying either the ~/.b
 
 ```bash
 # ~/.bashrc or ~/.zshrc
-export PATH="$PATH:/<path-to-dalmatian-tools>/bin"
+export PATH="$PATH:/<path-to-approved-premises-tools>/bin"
 ```
 
 The easiest way for this to take effect is to close and open your terminal application
@@ -63,10 +63,13 @@ Server logs will then be avaiable in the browser at http://localhost:10350
 You will be able to log into the application at http://localhost:3000 with the following:
 
 ##### Delius credentials
+
 - **Username:** `JIMSNOWLDAP`
-- **Password:** `secret`
+
+* **Password:** `secret`
 
 ##### Nomis credentials
+
 Take your pick from the [users seeded in nomis-user-roles-api](https://github.com/ministryofjustice/nomis-user-roles-api/blob/main/src/main/resources/db/dev/V3_1__user_data.sql)
 
 e.g.
@@ -77,6 +80,7 @@ e.g.
 ##### CAS2-specific users
 
 ###### External CAS2 Assessor
+
 CAS2 has a group of external users from the NACRO organisation who are granted the
 `CAS2_ASSESSOR` role and who have access to submitted CAS2 applications only.
 
@@ -84,12 +88,14 @@ CAS2 has a group of external users from the NACRO organisation who are granted t
 - **Password:** `password123456`
 
 ###### CAS2 Management information user
+
 CAS2 has a group of NOMIS/DPS users who need to download management information.
 
 - **Username:** `CAS2_MI_USER`
 - **Password:** `password123456`
 
 ###### CAS2 Admin
+
 CAS2 has a group of NOMIS/DPS users who can view all submitted applications.
 
 - **Username:** `CAS2_ADMIN_USER`
