@@ -23,7 +23,7 @@ resources = [
     "prison-api",
     "redis",
     "hmpps-auth",
-    "localstack"
+    "localstack",
 ]
 
 if local_api:
@@ -36,6 +36,9 @@ if local_api:
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
         ),
+        serve_env={
+            "SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL": "http://localhost:8181"
+        }
     )
     resources.append("local_api")
 
@@ -59,6 +62,32 @@ if local_ui:
         },
     )
     resources.append("local_ui")
+
+local_resource(
+    "approved-premises-and-delius",
+    serve_cmd="./gradlew approved-premises-and-delius:bootRun",
+    serve_dir= config.main_dir + "/hmpps-probation-integration-services",
+    readiness_probe=probe(
+        period_secs=15, http_get=http_get_action(port=8181, path="/health")
+    ),
+    serve_env={
+        "SERVER_PORT": "8181",
+        "SPRING_PROFILES_ACTIVE": "dev",
+        "WIREMOCK_PORT": "7874",
+        "INTEGRATIONS_APPROVED-PREMISES-API_URL": "http://localhost:8080",
+        "LOGGING_LEVEL_UK_GOV_JUSTICE_DIGITAL_HMPPS": "DEBUG",
+        "LOGGING_LEVEL_SECURITY_OAUTH2_CLIENT": "DEBUG",
+        "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY": "DEBUG",
+        "SPRING_JPA_SHOW-SQL": "true",
+        "OAUTH2_CLIENT-ID": "approved-premises-api",
+        "OAUTH2_CLIENT-SECRET": "clientsecret",
+        "SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_HMPPS-AUTH_TOKEN-URI": "http://localhost:9091/auth/oauth/token",
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI": "http://localhost:9091/auth/.well-known/jwks.json",
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI": "http://localhost:9091/auth/issuer"
+    },
+)
+
+resources.append("approved-premises-and-delius")
 
 config.clear_enabled_resources()
 config.set_enabled_resources(resources)
