@@ -53,3 +53,27 @@ insert into OMS_ROLES (ROLE_ID, ROLE_CODE, ROLE_NAME, ROLE_TYPE, ROLE_FUNCTION, 
 --   and can be referenced with either hasRole("CAS2_ADMIN") or
 --   hasAuthority("ROLE_CAS2_ADMIN") in Spring Security filters
 INSERT INTO USER_CASELOAD_ROLES (ROLE_ID, CASELOAD_ID, USERNAME) VALUES ((SELECT ROLE_ID FROM OMS_ROLES WHERE ROLE_CODE = 'CAS2_ADMIN'), 'NWEB', 'CAS2_ADMIN_USER');
+
+-- SET UP CAS2_LICENCE_USER
+--  this is all copied from HMPPS-Auth, see:
+--  https://github.com/ministryofjustice/hmpps-auth/blob/main/src/main/resources/db/dev/data/auth/V900_3__users.sql
+CREATE USER IF NOT EXISTS CAS2_LICENCE_USER password 'password123456';
+
+INSERT INTO STAFF_MEMBERS (STAFF_ID, FIRST_NAME, LAST_NAME, STATUS) VALUES (3030, 'CAS2', 'Licence Case Admin', 'ACTIVE');
+
+INSERT INTO STAFF_USER_ACCOUNTS (username, staff_user_type, staff_id, working_caseload_id, id_source)
+VALUES ('CAS2_LICENCE_USER', 'GENERAL', 3030, 'BAI', 'USER');
+
+INSERT INTO DBA_USERS (username, account_status, profile)
+VALUES ('CAS2_LICENCE_USER', 'OPEN', 'TAG_GENERAL');
+
+INSERT INTO SYS.USER$ (name, spare4)
+VALUES ('CAS2_LICENCE_USER', 'S:C59371608F601E454682E0B5293F2752A1DC31C4BDEF9D50802212AD981E');
+
+INSERT INTO USER_ACCESSIBLE_CASELOADS (CASELOAD_ID, USERNAME, START_DATE) VALUES ('NWEB', 'CAS2_LICENCE_USER', now());
+
+-- assign ROLE_LICENCE_CA role to CAS2_LICENCE_USER
+-- This will appear as the ROLE_LICENCE_CA authority in the JWT
+--   and can be referenced with either hasRole("LICENCE_CA") or
+--   hasAuthority("ROLE_LICENCE_CA") in Spring Security filters
+INSERT INTO USER_CASELOAD_ROLES (ROLE_ID, CASELOAD_ID, USERNAME) VALUES ((SELECT ROLE_ID FROM OMS_ROLES WHERE ROLE_CODE = 'LICENCE_CA'), 'NWEB', 'CAS2_LICENCE_USER');

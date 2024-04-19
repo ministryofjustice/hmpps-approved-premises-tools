@@ -70,6 +70,7 @@ echo ""
 echo "  also: - external CAS2_ASSESSOR_USER/password123456 (ROLE_CAS2_ASSESSOR)"
 echo "        - Nomis user CAS2_MI_USER/password123456 (ROLE_CAS2_MI)"
 echo "        - Nomis user CAS2_ADMIN_USER/password123456 (ROLE_CAS2_ADMIN)"
+echo "        - Nomis user CAS2_LICENCE_USER/password123456 (ROLE_LICENCE_CA)"
 echo ""
 echo "There is also a usable CRN: X320741"
 
