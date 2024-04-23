@@ -101,6 +101,13 @@ CAS2 has a group of NOMIS/DPS users who can view all submitted applications.
 - **Username:** `CAS2_ADMIN_USER`
 - **Password:** `password123456`
 
+###### CAS2 Licence Case Admin
+
+CAS2 allows Nomis users with the Licence Case Admin role to view applications for their prison.
+
+- **Username:** `CAS2_LICENCE_USER`
+- **Password:** `password123456`
+
 ##### CRNs
 
 There is also a usable CRN: `X320741`
