@@ -1,5 +1,6 @@
 {
   "id": "5bea7fae-090b-4010-b0bc-bf4d9068b2bd",
+  "priority": 2,
   "request": {
     "method": "GET",
     "urlPathPattern": "/risk-to-the-individual/(.*)"
@@ -32,4 +33,3 @@
     }
   }
 }
-
