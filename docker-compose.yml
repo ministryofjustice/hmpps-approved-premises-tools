@@ -3,6 +3,10 @@ services:
   api:
     image: quay.io/hmpps/hmpps-approved-premises-api:latest
     container_name: approved-premises-api-dev
+    depends_on:
+      - database
+      - redis
+      - hmpps-auth
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth

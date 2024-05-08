@@ -31,16 +31,21 @@ if local_api:
     local_resource(
         "local_api",
         serve_cmd="./gradlew bootRunLocal",
-        resource_deps=["database", "redis", "hmpps-auth"],
+        resource_deps=["database", "redis", "hmpps-auth", "approved-premises-and-delius"],
         serve_dir=os.getenv("APPROVED_PREMISES_API_PATH"),
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
         ),
         serve_env={
             "SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL": "http://localhost:8181"
-        }
+        },
     )
     resources.append("local_api")
+else:
+    dc_resource(
+        "api",
+        resource_deps=["approved-premises-and-delius"]
+    )
 
 if local_ui:
     resources.remove("frontend")
@@ -59,7 +64,7 @@ if local_ui:
             "HMPPS_AUTH_URL": "http://localhost:9091/auth",
             "HMPPS_AUTH_EXTERNAL_URL": "http://localhost:9091/auth",
             "TOKEN_VERIFICATION_API_URL": "http://localhost:9091/verification",
-        },
+        }
     )
     resources.append("local_ui")
 
@@ -68,7 +73,7 @@ local_resource(
     serve_cmd="./gradlew approved-premises-and-delius:bootRun",
     serve_dir= config.main_dir + "/hmpps-probation-integration-services",
     readiness_probe=probe(
-        period_secs=15, http_get=http_get_action(port=8181, path="/health")
+        period_secs=5, http_get=http_get_action(port=8181, path="/health")
     ),
     serve_env={
         "SERVER_PORT": "8181",
