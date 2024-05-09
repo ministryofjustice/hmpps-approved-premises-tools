@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if ! [ "$(command -v tilt)" ];then
     echo "Tilt could not be found. Install with ``brew install tilt`` and try again"
     exit
