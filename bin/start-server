@@ -75,6 +75,6 @@ echo "        - Nomis user CAS2_ADMIN_USER/password123456 (ROLE_CAS2_ADMIN)"
 echo "        - Nomis user CAS2_LICENCE_USER/password123456 (ROLE_LICENCE_CA)"
 echo ""
 echo "There is a usable CRN: X320741 (NOMS_NUMBER: A1234AI)"
-echo "There is partial support for a second CRN: C246139 (NOMS_NUMBER: A5671YZ)"
+echo "There is partial support for a second CRN: C246139 (NOMS_NUMBER: A1234AJ)"
 
 exit 0

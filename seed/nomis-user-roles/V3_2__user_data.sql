@@ -1,3 +1,8 @@
+-- ASSING PRISON CODE TO POM_USER
+-- this user is already seeded, but we want the prison code to match our example noms numbers
+UPDATE STAFF_USER_ACCOUNTS 
+SET working_caseload_id = 'LEI'
+WHERE username = 'POM_USER';
 
 -- SET UP CAS2_MI_USER
 --  this is all copied from HMPPS-Auth, see:
@@ -8,7 +13,7 @@ CREATE USER IF NOT EXISTS CAS2_MI_USER password 'password123456';
 INSERT INTO STAFF_MEMBERS (STAFF_ID, FIRST_NAME, LAST_NAME, STATUS) VALUES (2929, 'CAS2', 'MI User', 'ACTIVE');
 
 INSERT INTO STAFF_USER_ACCOUNTS (username, staff_user_type, staff_id, working_caseload_id, id_source)
-VALUES ('CAS2_MI_USER', 'GENERAL', 2929, 'BAI', 'USER');
+VALUES ('CAS2_MI_USER', 'GENERAL', 2929, 'LEI', 'USER');
 
 INSERT INTO DBA_USERS (username, account_status, profile)
 VALUES ('CAS2_MI_USER', 'OPEN', 'TAG_GENERAL');
@@ -36,7 +41,7 @@ CREATE USER IF NOT EXISTS CAS2_ADMIN_USER password 'password123456';
 INSERT INTO STAFF_MEMBERS (STAFF_ID, FIRST_NAME, LAST_NAME, STATUS) VALUES (2930, 'CAS2', 'Admin User', 'ACTIVE');
 
 INSERT INTO STAFF_USER_ACCOUNTS (username, staff_user_type, staff_id, working_caseload_id, id_source)
-VALUES ('CAS2_ADMIN_USER', 'GENERAL', 2930, 'BAI', 'USER');
+VALUES ('CAS2_ADMIN_USER', 'GENERAL', 2930, 'LEI', 'USER');
 
 INSERT INTO DBA_USERS (username, account_status, profile)
 VALUES ('CAS2_ADMIN_USER', 'OPEN', 'TAG_GENERAL');
@@ -62,7 +67,7 @@ CREATE USER IF NOT EXISTS CAS2_LICENCE_USER password 'password123456';
 INSERT INTO STAFF_MEMBERS (STAFF_ID, FIRST_NAME, LAST_NAME, STATUS) VALUES (3030, 'CAS2', 'Licence Case Admin', 'ACTIVE');
 
 INSERT INTO STAFF_USER_ACCOUNTS (username, staff_user_type, staff_id, working_caseload_id, id_source)
-VALUES ('CAS2_LICENCE_USER', 'GENERAL', 3030, 'BAI', 'USER');
+VALUES ('CAS2_LICENCE_USER', 'GENERAL', 3030, 'LEI', 'USER');
 
 INSERT INTO DBA_USERS (username, account_status, profile)
 VALUES ('CAS2_LICENCE_USER', 'OPEN', 'TAG_GENERAL');
