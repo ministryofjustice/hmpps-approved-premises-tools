@@ -13,7 +13,7 @@
       "surname": "Snow",
       "email": "test@digital.justice.gov.uk",
       "enabled": true,
-      "roles": ["ROLE_PROBATION", "ROLE_APPROVED_PREMISES_STAFF"]
+      "roles": ["ROLE_PROBATION"]
     },
     "headers": {
       "Content-Type": "application/json"
