@@ -36,7 +36,8 @@ values
     (10001, 10001, 'Load-Tester', 'C.', null, 5, 'CAS-LOAD-TESTER', 0, 0),
     (10002, 10002, 'Assessor', 'T.', null, 5, 'TEMPORARY-ACCOMMODATION-E2E-TESTER', 0, 0),
     (10003, 10003, 'Referrer', 'T.', null, 5, 'TEMPORARY-ACCOMMODATION-E2E-REFERRER', 0, 0),
-    (10004, 10004, 'Testy', 'Tester', null, 5, 'TESTER.TESTY', 0, 0);
+    (10004, 10004, 'Testy', 'Tester', null, 5, 'TESTER.TESTY', 0, 0),
+    (10005, 10005, 'Key', 'Worker', null, 5, 'KEY.WORKER', 0, 0);
 
 INSERT INTO STAFF (STAFF_ID, START_DATE, SURNAME, FORENAME, ROW_VERSION, OFFICER_CODE, CREATED_BY_USER_ID,
                    LAST_UPDATED_USER_ID, CREATED_DATETIME, LAST_UPDATED_DATETIME, PRIVATE, PROBATION_AREA_ID)
@@ -45,4 +46,5 @@ VALUES
 (10001,to_date('01-JAN-18','DD-MON-RR'),'Load-Tester','C.',1,'AP00001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N06')),
 (10002,to_date('01-JAN-18','DD-MON-RR'),'Assessor','T.',1,'AP00001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N06')),
 (10003,to_date('01-JAN-18','DD-MON-RR'),'Referrer','T.',1,'AP00001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N06')),
-(10004,to_date('01-JAN-18','DD-MON-RR'),'Testy','Tester',1,'AP00001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N02'));
+(10004,to_date('01-JAN-18','DD-MON-RR'),'Testy','Tester',1,'AP00001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N02')),
+(10005,to_date('01-JAN-18','DD-MON-RR'),'Key','Worker',1,'KEY0001',1,1,to_date('01-JAN-18','DD-MON-RR'),to_date('01-JAN-18','DD-MON-RR'),0,(SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N02'));

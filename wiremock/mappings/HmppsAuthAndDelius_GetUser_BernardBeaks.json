@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/user/BERNARD.BEAKS"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 2500057096,
+      "username": "BERNARD.BEAKS",
+      "firstName": "Bernard",
+      "surname": "Beaks",
+      "email": "bernard.beaks@example.digital.justice.gov.uk",
+      "enabled": true,
+      "roles": ["ROLE_PROBATION"]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
