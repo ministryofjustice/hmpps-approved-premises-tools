@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/user/APPROVEDPREMISESTESTUSER"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 2500012345,
+      "username": "APPROVEDPREMISESTESTUSER",
+      "firstName": "AP",
+      "surname": "Test User",
+      "email": "ap.test.user@example.digital.justice.gov.uk",
+      "enabled": true,
+      "roles": ["ROLE_PROBATION"]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

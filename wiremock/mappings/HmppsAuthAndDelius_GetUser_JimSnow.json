@@ -2,16 +2,17 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPattern": "/user/.*"
+    "urlPattern": "/user/JIMSNOWLDAP"
   },
   "response": {
+    "transformers": ["response-template"],
     "status": 200,
     "jsonBody": {
       "userId": 2500077027,
       "username": "JIMSNOWLDAP",
       "firstName": "Jim",
       "surname": "Snow",
-      "email": "test@digital.justice.gov.uk",
+      "email": "jim.snow@example.digital.justice.gov.uk",
       "enabled": true,
       "roles": ["ROLE_PROBATION"]
     },
