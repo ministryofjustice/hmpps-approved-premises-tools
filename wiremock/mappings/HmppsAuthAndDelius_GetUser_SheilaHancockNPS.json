@@ -1,0 +1,24 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/user/SHEILAHANCOCKNPS"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 11,
+      "username": "SHEILAHANCOCKNPS",
+      "firstName": "E2E",
+      "surname": "CRU Member",
+      "email": "e2e.cru.member@example.justice.gov.uk",
+      "enabled": true,
+      "roles": ["ROLE_PROBATION"]
+    },
+    "headers": {
+      "Content-Type": "application/json",
+      "X-comment": "the CAS1 E2E user for the 'CRU Team' persona (CAS1_E2E_CRU_MEMBER_USERNAME)"
+    }
+  }
+}
