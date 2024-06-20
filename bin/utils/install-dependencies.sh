@@ -6,3 +6,5 @@ then
   cd "$(dirname "$0")/../.." || exit
   brew bundle > /dev/null 2>&1
 fi
+
+echo "Dependencies installed"

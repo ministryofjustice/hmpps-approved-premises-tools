@@ -2,3 +2,6 @@
 /community-api-db
 /Brewfile.lock.json
 /hmpps-probation-integration-services
+package-lock.json
+.idea
+.DS_STORE
