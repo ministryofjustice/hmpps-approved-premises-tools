@@ -66,6 +66,8 @@ echo "Stack running! You will be able to log into the application at http://loca
 echo ""
 echo "For CAS1 and CAS3 use the Delius user JIMSNOWLDAP/secret"
 echo ""
+echo "For a user without a Delius Staff account use NONSTAFFUSER/password123456"
+echo ""
 echo "For CAS2, use the Nomis user: POM_USER/password123456"
 echo ""
 echo "  also: - external CAS2_ASSESSOR_USER/password123456 (ROLE_CAS2_ASSESSOR)"

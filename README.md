@@ -121,6 +121,14 @@ We login to CAS1 and CAS3 Systems using delius credentials.
 
 * **Password:** `secret`
 
+#### User without a Delius Staff account
+
+We login using.
+
+- **Username:** `NONSTAFFMEMBER`
+
+* **Password:** `password123456`
+
 #### Nomis credentials
 
 Take your pick from the [users seeded in nomis-user-roles-api](https://github.com/ministryofjustice/nomis-user-roles-api/blob/main/src/main/resources/db/dev/V3_1__user_data.sql)

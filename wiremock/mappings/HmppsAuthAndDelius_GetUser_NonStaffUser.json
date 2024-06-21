@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/user/NONSTAFFUSER"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 2500077028,
+      "username": "NONSTAFFUSER",
+      "firstName": "NonStaff",
+      "surname": "User",
+      "email": "nonstaff.user@example.digital.justice.gov.uk",
+      "enabled": true,
+      "roles": ["ROLE_PROBATION"]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
