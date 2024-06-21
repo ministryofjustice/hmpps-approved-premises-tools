@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Checking if Docker is running"
+
 if (! docker stats --no-stream > /dev/null 2>&1  ); then
   echo "==> Launching Docker..."
 
@@ -13,3 +15,5 @@ while (! docker stats --no-stream > /dev/null 2>&1 ); do
   sleep 1
 done
 fi
+
+echo "Docker is running"

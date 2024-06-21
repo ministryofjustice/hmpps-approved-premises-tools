@@ -1,13 +1,19 @@
 # Approved Premises Tools
 
-A suite of tools to help with development on the HMPPS Approved Premises project.
+This project provides tools to run the HMPPS CAS Projects and their dependencies on local developer machines
+
+As this project was created to support the approved premises project (CAS1), we refer to it as approved premises tools, but it is used for CAS1,2 & 3.
 
 ## Prerequisites
 
-* Docker
+* [Homebrew](https://brew.sh/)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) - We have licenses for this
+* Gradle - This is required spin up local instances of the API and approved-premises-and-delius. Can install using brew
+
+The following will be automatically installed via brew when starting the tools
+
 * [Tilt](https://tilt.dev/)
 * [YQ](https://mikefarah.gitbook.io/yq/)
-* [IntelliJ](https://www.jetbrains.com/idea/)
 
 ## Getting started
 
@@ -17,58 +23,105 @@ A suite of tools to help with development on the HMPPS Approved Premises project
 git clone git@github.com:ministryofjustice/hmpps-approved-premises-tools.git
 ```
 
-### (Recommended) Install and use IntelliJ
+### Add PATH entries for local CAS projects
 
-IntelliJ is an IDE made for Java/Kotlin. It can handle dependancy downloads for Gradle
-among other things so it's recommended to install and use it. Once downloaded open each
-project within it to download and check for any required dependancies.
+The tool can run the CAS UIs and API using the locally checked out code, instead of downloading the latest published docker image
+
+This is typically how the tool is used during development as you can quickly redeploy changes made locally for testing.
+
+To support this, clone the API project and required UI projects e.g.
+
+* https://github.com/ministryofjustice/hmpps-approved-premises-api
+* https://github.com/ministryofjustice/hmpps-approved-premises-ui
+* https://github.com/ministryofjustice/hmpps-temporary-accommodation-ui
+* https://github.com/ministryofjustice/hmpps-community-accommodation-tier-2-ui
+
+Then add the path to these checked out projects in your ~/.zsrhc file:
+
+```bash
+# ~/.zshrc
+export LOCAL_CAS_API_PATH=/Users/david.atkins/git-clones/hmpps-approved-premises-api
+export LOCAL_CAS_UI_PATH=/Users/david.atkins/git-clones/hmpps-approved-premises-ui
+```
+
+Note! We currently only support running 1 UI at any time, populate LOCAL_CAS_UI_PATH with which ever you'd like to use
+
+The easiest way for this to take effect is to close and open your terminal application, or you can run  `source ~/.zshrc`
 
 ### (Optional) Add `ap-tools` to your PATH
 
-To add the ability to run the `ap-tools` command, you will need to add the Approved Premises Tools bin directory to your $PATH variable
-
-Find the full path of Approved Premises Tools by changing directory into this repository, and run pwd. eg:
+To add the ability to run the `ap-tools` command from any directory, you will need to add project directory to your $PATH variable e.g. 
 
 ```bash
-$ cd ~/git-clones/hmpps-approved-premises-tools
-$ pwd
-/Users/alex/git-clones/hmpps-approved-premises-tools
-```
-
-Add this path, plus '/bin' to the '$PATH' variable, by modifying either the ~/.bashrc or ~/.zshrc file
-
-```bash
-# ~/.bashrc or ~/.zshrc
+# ~/.zshrc
 export PATH="$PATH:/<path-to-approved-premises-tools>/bin"
 ```
 
-The easiest way for this to take effect is to close and open your terminal application
+### Start ap-tools
 
-Or you can run `source ~/.bashrc` or `source ~/.zshrc` on all open terminals
-
-## Commands
-
-### Server
-
-This spins up all the prerequisites for running Approved Premises as Docker containers using [Tilt](https://tilt.dev/)
-
-#### Start Server
+We typically run ap-tools passing in the '--local-api and --local-ui' arguments to run the locally cloned versions of the projects
 
 ```bash
-ap-tools server start
+ap-tools server start --local-ui --local-api
 ```
 
-Server logs will then be avaiable in the browser at http://localhost:10350
+If you drop the '--local-*' arguments, the most recently published docker images will be run instead.
 
-You will be able to log into the application at http://localhost:3000 with the following:
+ap-tools uses tilt to start all required components and ensure they're in the same docker network. Tilt uses a tiltfile to decide what to do, and this delegates to a docker-compose.yml file for docker managed components.
 
-##### Delius credentials
+You can check on the state of ap-tools by visiting the [tilt console](http://localhost:10350) 
+
+If this is your first time running the tools, you may see a few components fail on their first startup attempt. The [tilt console](http://localhost:10350) provides logs for each component and can be used to restart components. 
+
+### Stop ap-tools
+
+Ap-tools can be stopped using
+
+```ap-tools server stop```
+
+Note that by default the API database will be retained across stop/start. If you'd like to remove this database, run the following from the root of the project 
+
+```docker-compose down -v```
+
+### Restart/Refresh components
+
+#### Refresh Local Components
+
+If you start ap-tools using '--local-ui', any changes you make to your ui code should be automatically applied (you can see restarts happening in the [tilt console](http://localhost:10350) when files are modified in the project)
+
+If you start ap-tools using '--local-api', you will need to manually restart the 'local-api' component in tilt via the [tilt console](http://localhost:10350).
+
+#### Refresh Docker Components
+
+If you'd like to refresh docker containers to use their latest version, you can use
+
+```bash
+ap-tools server start --refresh
+```
+
+Note - this _will not_ refresh the approved-premises-and-delius component, as this is run locally via gradle
+
+If you'd like to restart the entire tilt stack and remove the API databases, you can use the following script from the root of the project
+
+```bash
+ap-tools server stop                                       
+docker-compose down -v
+ap-tools server start --local-ui --local-api
+```
+
+### Accessing the User Interface
+
+Once ap-tools has started and the [tilt console](http://localhost:10350) is all green, you can access the user interface on http://localhost:3000
+
+#### Delius credentials
+
+We login to CAS1 and CAS3 Systems using delius credentials.
 
 - **Username:** `JIMSNOWLDAP`
 
 * **Password:** `secret`
 
-##### Nomis credentials
+#### Nomis credentials
 
 Take your pick from the [users seeded in nomis-user-roles-api](https://github.com/ministryofjustice/nomis-user-roles-api/blob/main/src/main/resources/db/dev/V3_1__user_data.sql)
 
@@ -77,9 +130,9 @@ e.g.
 - **Username:** `POM_USER`
 - **Password:** `password123456`
 
-##### CAS2-specific users
+#### CAS2-specific users
 
-###### External CAS2 Assessor
+##### External CAS2 Assessor
 
 CAS2 has a group of external users from the NACRO organisation who are granted the
 `CAS2_ASSESSOR` role and who have access to submitted CAS2 applications only.
@@ -87,68 +140,28 @@ CAS2 has a group of external users from the NACRO organisation who are granted t
 - **Username:** `CAS2_ASSESSOR_USER`
 - **Password:** `password123456`
 
-###### CAS2 Management information user
+##### CAS2 Management information user
 
 CAS2 has a group of NOMIS/DPS users who need to download management information.
 
 - **Username:** `CAS2_MI_USER`
 - **Password:** `password123456`
 
-###### CAS2 Admin
+##### CAS2 Admin
 
 CAS2 has a group of NOMIS/DPS users who can view all submitted applications.
 
 - **Username:** `CAS2_ADMIN_USER`
 - **Password:** `password123456`
 
-###### CAS2 Licence Case Admin
+##### CAS2 Licence Case Admin
 
 CAS2 allows Nomis users with the Licence Case Admin role to view applications for their prison.
 
 - **Username:** `CAS2_LICENCE_USER`
 - **Password:** `password123456`
 
-##### CRNs
+#### CRNs
 
 There is also a usable CRN: `X320741`
 
-##### Running local instances of the UI or API
-
-If you need to run local instances of either the UI or API (rather than serving them from the latest Docker images), you can run add `--local-ui` or `--local-api` flags to the `start` command like so:
-
-```bash
-ap-tools server start --local-ui
-```
-
-```bash
-ap-tools server start --local-api
-```
-
-```bash
-ap-tools server start --local-ui --local-api
-```
-
-Note: For this to work, you must have the path to your API / UI repos set as environment variables (e.g in your `.bashrc` file), i.e:
-
-```bash
-export APPROVED_PREMISES_UI_PATH=/full/path/to/your/repo
-export APPROVED_PREMISES_API_PATH=/full/path/to/your/repo
-```
-
-#### Stop Server
-
-```bash
-ap-tools server stop
-```
-
-This will stop all running `tilt` processes and tear down the entire stack.
-
-#### Refreshing containers
-
-Sometimes the stack will fail to come up cleanly, or you might want
-to get the latest version(s) of the containers. To do this, you
-can add a `--refresh` flag like so:
-
-```bash
-ap-tools server start --refresh
-```

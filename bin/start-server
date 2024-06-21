@@ -11,15 +11,15 @@ while [ "$1" != "" ];
 do
    case $1 in
     --local-ui)
-        if [ -z "${APPROVED_PREMISES_UI_PATH}" ]; then
-          echo "Path to local UI not found, please ensure you have set the APPROVED_PREMISES_UI_PATH environment variable and try again"
+        if [ -z "${LOCAL_CAS_UI_PATH}" ]; then
+          echo "Path to local UI not found, please ensure you have set the LOCAL_CAS_UI_PATH environment variable and try again"
           exit 1
         fi
         args="$args --local-ui"
         ;;
     --local-api)
-        if [ -z "${APPROVED_PREMISES_API_PATH}" ]; then
-          echo "Path to local API not found, please ensure you have set the APPROVED_PREMISES_API_PATH environment variable and try again"
+        if [ -z "${LOCAL_CAS_API_PATH}" ]; then
+          echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
           exit 1
         fi
         args="$args --local-api"
@@ -62,12 +62,11 @@ until curl http://localhost:9590/api/health > /dev/null 2>&1; do
 done
 
 echo ""
-echo "Stack running! You will be able to log into the application at http://localhost:3000 with the following Delius user:"
+echo "Stack running! You will be able to log into the application at http://localhost:3000:"
 echo ""
-echo "Username: JIMSNOWLDAP"
-echo "Password: secret"
+echo "For CAS1 and CAS3 use the Delius user JIMSNOWLDAP/secret"
 echo ""
-echo "or Nomis user: POM_USER/password123456"
+echo "For CAS2, use the Nomis user: POM_USER/password123456"
 echo ""
 echo "  also: - external CAS2_ASSESSOR_USER/password123456 (ROLE_CAS2_ASSESSOR)"
 echo "        - Nomis user CAS2_MI_USER/password123456 (ROLE_CAS2_MI)"
