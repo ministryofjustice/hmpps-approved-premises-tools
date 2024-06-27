@@ -16,6 +16,11 @@ values
 
 --- we update jim snow to use a probation area id we have configured in the system (N58, South West)
 UPDATE STAFF set probation_area_id = (SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N58') WHERE staff_id = '17';
+
+--- we update SheilaHancockNPS to use a probation area id we have configured in the system (N58, South West)
+---   we're using Sheila as the CAS1 user E2E user for the "CRU Member" persona
+UPDATE STAFF set probation_area_id = (SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N58'), FORENAME = 'E2E', FORENAME2 = '', SURNAME = 'CRU Member' WHERE staff_id = '11';
+
 --- we update bernard beaks to use a probation area id we have configured in the system (N58, South West)
 UPDATE STAFF set probation_area_id = (SELECT probation_area_id FROM PROBATION_AREA WHERE CODE = 'N58'), FORENAME = 'bernard', SURNAME = 'beaks' WHERE staff_id = '2500057096';
 --- we update PANESAR.JASPAL to use a probation area id we have configured in the system (N03, Wales)
