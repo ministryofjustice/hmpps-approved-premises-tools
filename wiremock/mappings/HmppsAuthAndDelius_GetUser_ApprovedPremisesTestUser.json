@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPathPattern": "/user/APPROVEDPREMISESTESTUSER"
+    "urlPathPattern": "(?i)\/user\/APPROVEDPREMISESTESTUSER"
   },
   "response": {
     "transformers": ["response-template"],

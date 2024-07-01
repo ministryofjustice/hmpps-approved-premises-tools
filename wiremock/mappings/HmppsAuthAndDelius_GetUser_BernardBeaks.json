@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPattern": "/user/BERNARD.BEAKS"
+    "urlPattern": "(?i)\/user\/BERNARD.BEAKS"
   },
   "response": {
     "transformers": ["response-template"],

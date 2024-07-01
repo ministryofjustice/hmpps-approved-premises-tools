@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPattern": "/user/JIMSNOWLDAP"
+    "urlPattern": "(?i)\/user\/JIMSNOWLDAP"
   },
   "response": {
     "transformers": ["response-template"],

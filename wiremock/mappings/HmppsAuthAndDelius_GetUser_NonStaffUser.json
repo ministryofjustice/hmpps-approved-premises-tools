@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPattern": "/user/NONSTAFFUSER"
+    "urlPattern": "(?i)\/user\/NONSTAFFUSER"
   },
   "response": {
     "transformers": ["response-template"],
