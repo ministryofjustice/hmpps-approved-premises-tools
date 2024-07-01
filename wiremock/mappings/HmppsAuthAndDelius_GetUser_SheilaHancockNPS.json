@@ -2,7 +2,7 @@
   "priority": 2,
   "request": {
     "method": "GET",
-    "urlPattern": "/user/SHEILAHANCOCKNPS"
+    "urlPattern": "(?i)\/user\/SHEILAHANCOCKNPS"
   },
   "response": {
     "transformers": ["response-template"],
