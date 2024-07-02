@@ -115,19 +115,14 @@ Once ap-tools has started and the [tilt console](http://localhost:10350) is all 
 
 #### Delius credentials
 
-We login to CAS1 and CAS3 Systems using delius credentials.
+We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used for passwords as we mock community API authentication using wiremock, and do not check passwords
 
-- **Username:** `JIMSNOWLDAP`
-
-* **Password:** `secret`
-
-#### User without a Delius Staff account
-
-We login using.
-
-- **Username:** `NONSTAFFMEMBER`
-
-* **Password:** `password123456`
+ * JIMSNOWLDAP - used that has all roles
+ * NONSTAFFMEMBER - user that is not staff. shouldn't be allowed access
+ * LAOFULLACCESS - user that has whitelisted (exclusion) for X400000
+ * LAORESTRICTED - user that is blacklisted (restriction) for X400000
+ * ApprovedPremisesTestUser - user for "Future manager" persona in E2E tests
+ * SheilaHancockNPS - user for the "CRU member" persona in E2E tests
 
 #### Nomis credentials
 
@@ -171,5 +166,7 @@ CAS2 allows Nomis users with the Licence Case Admin role to view applications fo
 
 #### CRNs
 
-There is also a usable CRN: `X320741`
+ * X320741
+ * X400000 exclusion for LAOFULLACCESS (whitelist)
+ * X400001 restricted from LAORESTRICTED (blacklist)
 
