@@ -44,7 +44,7 @@ if [ $do_refresh -gt 0 ]; then
   "$(dirname "$0")/utils/refresh-containers.sh"
 fi
 
-"$(dirname "$0")/utils/install-or-update-intergration-services.sh"
+"$(dirname "$0")/utils/install-or-update-integration-services.sh"
 
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
