@@ -77,11 +77,15 @@ If this is your first time running the tools, you may see a few components fail 
 
 Ap-tools can be stopped using
 
-```ap-tools server stop```
+```bash
+ap-tools server stop
+```
 
 Note that by default the API database will be retained across stop/start. If you'd like to remove this database, run the following from the root of the project 
 
-```docker-compose down -v```
+```bash
+docker-compose down -v
+```
 
 ### Restart/Refresh components
 
