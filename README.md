@@ -67,7 +67,7 @@ ap-tools server start --local-ui --local-api
 
 If you drop the '--local-*' arguments, the most recently published docker images will be run instead.
 
-ap-tools uses tilt to start all required components and ensure they're in the same docker network. Tilt uses a tiltfile to decide what to do, and this delegates to a docker-compose.yml file for docker managed components.
+ap-tools uses tilt to start all required components and ensure they're in the same docker network. Tilt uses a tiltfile to decide what to do, and this delegates to a docker compose.yml file for docker managed components.
 
 You can check on the state of ap-tools by visiting the [tilt console](http://localhost:10350) 
 
@@ -84,7 +84,7 @@ ap-tools server stop
 Note that by default the API database will be retained across stop/start. If you'd like to remove this database, run the following from the root of the project 
 
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Restart/Refresh components
@@ -109,7 +109,7 @@ If you'd like to restart the entire tilt stack and remove the API databases, you
 
 ```bash
 ap-tools server stop                                       
-docker-compose down -v
+docker compose down -v
 ap-tools server start --local-ui --local-api
 ```
 
