@@ -122,7 +122,7 @@ Once ap-tools has started and the [tilt console](http://localhost:10350) is all 
 We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used for passwords as we mock community API authentication using wiremock, and do not check passwords
 
  * JIMSNOWLDAP - used that has all roles
- * NONSTAFFMEMBER - user that is not staff. shouldn't be allowed access
+ * NONSTAFFUSER - user that is not staff. shouldn't be allowed access
  * LAOFULLACCESS - user that has whitelisted (exclusion) for X400000
  * LAORESTRICTED - user that is blacklisted (restriction) for X400000
  * ApprovedPremisesTestUser - user for "Future manager" persona in E2E tests
