@@ -17,7 +17,6 @@ resources = [
     "auth-db",
     "hmpps-auth",
     "community-api",
-    "hmpps-assess-risks-and-needs",
     "wiremock",
     "database",
     "prison-api",
