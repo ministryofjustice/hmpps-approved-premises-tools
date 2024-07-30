@@ -207,7 +207,7 @@ services:
       test: pg_isready -d auth-db
 
   redis:
-    image: "bitnami/redis:7.0.11"
+    image: "bitnami/redis:7.2.5"
     container_name: approved-premises-redis-dev
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -225,7 +225,7 @@ services:
       - "7341:8081"
 
   localstack:
-    image: localstack/localstack:1.3.1
+    image: localstack/localstack:3.4.0
     container_name: approved-premises-api-localstack
     ports:
       - "4566:4566"
