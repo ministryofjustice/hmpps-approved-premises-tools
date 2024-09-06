@@ -113,11 +113,13 @@ docker compose down -v
 ap-tools server start --local-ui --local-api
 ```
 
-### Accessing the User Interface
+## Accessing the User Interface
 
 Once ap-tools has started and the [tilt console](http://localhost:10350) is all green, you can access the user interface on http://localhost:3000
 
-#### Delius credentials
+## Test Users
+
+### CAS1 & CAS 3 (Delius)
 
 We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used for passwords as we mock community API authentication using wiremock, and do not check passwords
 
@@ -128,6 +130,8 @@ We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used
  * ApprovedPremisesTestUser - user for "Future manager" persona in E2E tests
  * SheilaHancockNPS - user for the "CRU member" persona in E2E tests
 
+### CAS2
+
 #### Nomis credentials
 
 Take your pick from the [users seeded in nomis-user-roles-api](https://github.com/ministryofjustice/nomis-user-roles-api/blob/main/src/main/resources/db/dev/V3_1__user_data.sql)
@@ -136,8 +140,6 @@ e.g.
 
 - **Username:** `POM_USER`
 - **Password:** `password123456`
-
-#### CAS2-specific users
 
 ##### External CAS2 Assessor
 
@@ -168,7 +170,40 @@ CAS2 allows Nomis users with the Licence Case Admin role to view applications fo
 - **Username:** `CAS2_LICENCE_USER`
 - **Password:** `password123456`
 
-#### CRNs
+## Adding / Removing Delius Users
+
+There are several sources to consider when adding / removing / updating delius users
+
+### HMPPS Auth (Authentication)
+
+When logging in to CAS1 or CAS2, users are authenticated using CAS Auth. This communicates a with wiremock endpoints to authenticate the user. Therefore, to login as a user a 'HmppsAuthAndDelius_GetUser_*' JSON file must exist in wiremock/mappings for the given username
+
+### Approved Premises and Delius API (Staff Details)
+
+This API is used to retrieve staff details.
+
+We can add test users via the [Data Loader](https://github.com/ministryofjustice/hmpps-probation-integration-services/blob/main/projects/approved-premises-and-delius/src/dev/kotlin/uk/gov/justice/digital/hmpps/data/DataLoader.kt). To make changes a PR must be created and reviewed by posting it to #topic-pi-cas123
+
+Also note that if the user requires an email address, an entry also needs adding to https://github.com/ministryofjustice/hmpps-probation-integration-services/blob/main/projects/approved-premises-and-delius/src/dev/resources/schema.ldif
+
+### Community API (Staff Details)
+
+Note - We're in the processing of removing usage of community API to retrieve staff information in favour of the approved-premises-and-delius API. Until that's done, we need to sync our test users defined in Approved Premises and Delius API with those defined in Community PAI
+
+Test users are managed by SQL Seed files added via /seed/community-api
+
+### CAS API (Roles)
+
+CAS 1 & 3 Roles are defined in the API DAtabase. For CAS1 there is a user interface to manage roles.
+
+The CAS API will auto-populate test users with roles via
+
+* https://github.com/ministryofjustice/hmpps-approved-premises-api/blob/main/src/main/resources/db/seed/local%2Bdev%2Btest/3__user.csv (deprecated)
+* [Auto Seed Kotlin Code](https://github.com/ministryofjustice/hmpps-approved-premises-api/blob/main/src/main/kotlin/uk/gov/justice/digital/hmpps/approvedpremisesapi/seed/cas1/Cas1AutoScript.kt)
+
+These typically align with users defined in the aforementioned sources
+
+## Test Offender CRNs
 
  * X320741
  * X400000 exclusion for LAOFULLACCESS (whitelist)
