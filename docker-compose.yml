@@ -1,4 +1,3 @@
-version: "3"
 services:
   api:
     image: quay.io/hmpps/hmpps-approved-premises-api:latest
@@ -17,17 +16,18 @@ services:
       - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://wiremock:8080
       - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://wiremock:8080
       - SERVICES_CASE-NOTES_BASE-URL=http://wiremock:8080/case-notes
-      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://localhost:8181
-      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://wiremock:8080
+      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://wiremock:8080
+      # because this service is ran as a tilt local resource (see tiltfile), it's not part of the docker-compose network
+      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://host.docker.internal:8181
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/approved_premises_localdev
       - SPRING_DATASOURCE_USERNAME=localdev
       - SPRING_DATASOURCE_PASSWORD=localdev_password
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
       - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
       - SEED_FILE-PREFIX=/tmp/seed
     ports:
-      - 8080:8080
+      - "8080:8080"
 
   frontend:
     image: quay.io/hmpps/hmpps-approved-premises-ui:latest
@@ -77,7 +77,7 @@ services:
       - "5001:5005"
     volumes:
       - ./seed/hmpps-auth:/seed
-    entrypoint: "java ${JAVA_OPTS} -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
+    entrypoint: "java -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
