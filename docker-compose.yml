@@ -1,8 +1,8 @@
-version: "3"
 services:
   api:
     image: quay.io/hmpps/hmpps-approved-premises-api:latest
     container_name: approved-premises-api-dev
+    pull_policy: always
     depends_on:
       - database
       - redis
@@ -17,21 +17,24 @@ services:
       - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://wiremock:8080
       - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://wiremock:8080
       - SERVICES_CASE-NOTES_BASE-URL=http://wiremock:8080/case-notes
-      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://localhost:8181
-      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://wiremock:8080
+      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://wiremock:8080
+      # because this service is ran as a tilt local resource (see tiltfile), it's not part of the docker-compose network
+      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://host.docker.internal:8181
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database/approved_premises_localdev
       - SPRING_DATASOURCE_USERNAME=localdev
       - SPRING_DATASOURCE_PASSWORD=localdev_password
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
       - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
       - SEED_FILE-PREFIX=/tmp/seed
+      - SEED_AUTO_ENABLED=true
     ports:
-      - 8080:8080
+      - "8080:8080"
 
   frontend:
     image: quay.io/hmpps/hmpps-approved-premises-ui:latest
     container_name: approved-premises-ui-dev
+    pull_policy: always
     environment:
       - REDIS_HOST=approved-premises-redis-dev
       - REDIS_PORT=6379
@@ -72,12 +75,13 @@ services:
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
     container_name: hmpps-auth
+    pull_policy: always
     ports:
       - "9091:8080"
       - "5001:5005"
     volumes:
       - ./seed/hmpps-auth:/seed
-    entrypoint: "java ${JAVA_OPTS} -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
+    entrypoint: "java -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
@@ -97,6 +101,7 @@ services:
   community-api:
     image: quay.io/hmpps/community-api:latest
     container_name: community-api
+    pull_policy: always
     ports:
       - "9590:8080"
     volumes:
@@ -123,6 +128,7 @@ services:
   prison-api:
     image: quay.io/hmpps/prison-api:latest
     container_name: prison-api
+    pull_policy: always
     ports:
       - "9570:8080"
     environment:
@@ -144,6 +150,7 @@ services:
   nomis-user-roles-api:
     image: quay.io/hmpps/nomis-user-roles-api:latest
     container_name: nomis-user-roles-api
+    pull_policy: always
     depends_on:
       - hmpps-auth
     ports:
@@ -159,26 +166,28 @@ services:
       - SPRING_FLYWAY_LOCATIONS=classpath:db/migration,classpath:db/dev,filesystem:/seed
 
   hmpps-manage-users-api:
-      image: quay.io/hmpps/hmpps-manage-users-api:latest
-      container_name: hmpps-manage-users-api
-      depends_on:
-        - hmpps-auth
-      ports:
-        - "9560:8096"
-      healthcheck:
-        test: [ "CMD", "curl", "-f", "http://localhost:8096/health/ping" ]
-      environment:
-        - SERVER_PORT=8096
-        - HMPPS_AUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
-        - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
-        - SPRING_PROFILES_ACTIVE=dev
-        - EXTERNAL_USERS_ENDPOINT_URL=http://hmpps-external-users-api:8098
-        - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
-        - AUTHORIZATION_SERVER_TOKEN_ENDPOINT_URL=http://hmpps-auth:8080/auth/oauth/token
+    image: quay.io/hmpps/hmpps-manage-users-api:latest
+    container_name: hmpps-manage-users-api
+    pull_policy: always
+    depends_on:
+      - hmpps-auth
+    ports:
+      - "9560:8096"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8096/health/ping" ]
+    environment:
+      - SERVER_PORT=8096
+      - HMPPS_AUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
+      - SPRING_PROFILES_ACTIVE=dev
+      - EXTERNAL_USERS_ENDPOINT_URL=http://hmpps-external-users-api:8098
+      - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
+      - AUTHORIZATION_SERVER_TOKEN_ENDPOINT_URL=http://hmpps-auth:8080/auth/oauth/token
 
   hmpps-external-users-api:
     image: quay.io/hmpps/hmpps-external-users-api:latest
     container_name: hmpps-external-users-api
+    pull_policy: always
     depends_on:
       - auth-db
       - hmpps-auth

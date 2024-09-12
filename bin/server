@@ -7,7 +7,6 @@ if ! [ "$(command -v tilt)" ];then
     exit
 fi
 
-"$(dirname "$0")/utils/install-dependencies.sh"
 "$(dirname "$0")/utils/launch-docker.sh"
 
 if [ -z "$1" ]; then

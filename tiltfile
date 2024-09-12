@@ -34,10 +34,7 @@ if local_api:
         serve_dir=os.getenv("LOCAL_CAS_API_PATH"),
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
-        ),
-        serve_env={
-            "SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL": "http://localhost:8181"
-        },
+        )
     )
     resources.append("local_api")
 else:
