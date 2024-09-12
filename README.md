@@ -23,6 +23,14 @@ The following will be automatically installed via brew when starting the tools
 git clone git@github.com:ministryofjustice/hmpps-approved-premises-tools.git
 ```
 
+### Install dependencies
+
+Run
+
+```bash
+/bin/install-dependencies.sh
+```
+
 ### Add PATH entries for local CAS projects
 
 The tool can run the CAS UIs and API using the locally checked out code, instead of downloading the latest published docker image
