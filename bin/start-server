@@ -6,6 +6,7 @@ args=""
 
 do_update=1
 do_refresh=0
+script_dir=$(dirname "$0")
 
 while [ "$1" != "" ];
 do
@@ -35,20 +36,22 @@ do
 done
 
 if [ $do_update -gt 0 ]; then
-  if "$(dirname "$0")/utils/check-for-update.sh"; then
+  if "$script_dir/utils/check-for-update.sh"; then
     do_refresh=1
   fi
 fi
 
 if [ $do_refresh -gt 0 ]; then
-  "$(dirname "$0")/utils/refresh-containers.sh"
+  "$script_dir/utils/refresh-containers.sh"
 fi
 
-"$(dirname "$0")/utils/install-or-update-integration-services.sh"
+"$script_dir/utils/install-or-update-integration-services.sh"
 
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
-cmd="tilt up -f $(dirname "$0")/../tiltfile"
+mkdir -p "$script_dir"/../databases
+
+cmd="tilt up -f $script_dir/../tiltfile"
 
 if [ ${#args} -ge 0 ]; then
   cmd="$cmd -- $args"
@@ -56,13 +59,14 @@ fi
 
 $cmd > /dev/null 2>&1 &
 
-until curl http://localhost:9590/api/health > /dev/null 2>&1; do
+echo "Waiting for approved-premises-api to be healthy"
+until curl http://localhost:8080/api/health > /dev/null 2>&1; do
   printf '.'
   sleep 2
 done
 
 echo ""
-echo "Stack running! You will be able to log into the application at http://localhost:3000:"
+echo "Stack running! You will be able to log into the application at http://localhost:3000"
 echo ""
 echo "For CAS1 and CAS3 use the Delius users. Any password can be used."
 echo ""
@@ -71,7 +75,6 @@ echo "   NONSTAFFUSER - user that is not staff"
 echo "   LAOFULLACCESS - user that has whitelisted (exclusion) for X400000"
 echo "   LAORESTRICTED - user that is blacklisted (restriction) for X400000"
 echo "   ApprovedPremisesTestUser - used for 'Future manager' persona in E2E tests"
-echo '   SheilaHancockNPS - user for the 'CRU member' persona in E2E tests'
 echo ""
 echo "For CAS2, use the Nomis users"
 echo ""

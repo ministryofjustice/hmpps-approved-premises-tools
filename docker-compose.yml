@@ -52,7 +52,7 @@ services:
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
     ports:
-      - 3000:3000
+      - "3000:3000"
     entrypoint: "node dist/server.js | bunyan"
 
   database:
@@ -63,7 +63,7 @@ services:
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
     volumes:
-      - database-data-development:/var/lib/postgresql/data/
+      - ./databases/api-db:/var/lib/postgresql/data/
     ports:
       - "5431:5432"
     healthcheck:
@@ -106,7 +106,7 @@ services:
       - "9590:8080"
     volumes:
       - ./seed/community-api:/seed
-      - ./community-api-db:/community-api-db
+      - ./databases/community-api-db:/community-api-db
     environment:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
@@ -144,7 +144,7 @@ services:
       - SPRING_FLYWAY_LOCATIONS=classpath:/db/migration/nomis/ddl,classpath:/db/migration/data,classpath:/db/migration/nomis/data,classpath:/db/migration/nomis/data-hsqldb,filesystem:/seed
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
     volumes:
-      - ./nomis-db:/nomis-db
+      - ./databases/nomis-db:/nomis-db
       - ./seed/prison-api:/seed
 
   nomis-user-roles-api:

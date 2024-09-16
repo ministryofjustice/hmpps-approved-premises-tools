@@ -5,3 +5,4 @@
 package-lock.json
 .idea
 .DS_STORE
+databases/

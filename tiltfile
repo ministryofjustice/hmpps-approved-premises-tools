@@ -85,7 +85,8 @@ local_resource(
         "OAUTH2_CLIENT-SECRET": "clientsecret",
         "SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_HMPPS-AUTH_TOKEN-URI": "http://localhost:9091/auth/oauth/token",
         "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI": "http://localhost:9091/auth/.well-known/jwks.json",
-        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI": "http://localhost:9091/auth/issuer"
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI": "http://localhost:9091/auth/issuer",
+        "SPRING_DATASOURCE_URL": "jdbc:h2:file:" + config.main_dir + "/databases/approved-premises-and-delius-db/dev;MODE=Oracle;DEFAULT_NULL_ORDERING=HIGH;AUTO_SERVER=true;AUTO_SERVER_PORT=9092"
     },
 )
 
