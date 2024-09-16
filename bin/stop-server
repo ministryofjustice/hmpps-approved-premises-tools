@@ -1,3 +1,23 @@
 #!/bin/sh
 
-killall tilt && tilt down -f "$(dirname "$0")/../tiltfile"
+do_clear_databases=0
+script_dir=$(dirname "$0")
+
+while [ "$1" != "" ];
+do
+   case $1 in
+    --clear-databases)
+        do_clear_databases=1
+        ;;
+  esac
+  shift
+done
+
+echo "==> Stopping tilt..."
+
+killall tilt && tilt down -f "$script_dir/../tiltfile"
+
+if [ $do_clear_databases -gt 0 ]; then
+  "$script_dir/utils/clear-databases.sh"
+fi
+

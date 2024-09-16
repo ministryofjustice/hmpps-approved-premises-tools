@@ -37,7 +37,7 @@ The tool can run the CAS UIs and API using the locally checked out code, instead
 
 This is typically how the tool is used during development as you can quickly redeploy changes made locally for testing.
 
-To support this, clone the API project and required UI projects e.g.
+To support this, clone the API project and required UI project(s) e.g.
 
 * https://github.com/ministryofjustice/hmpps-approved-premises-api
 * https://github.com/ministryofjustice/hmpps-approved-premises-ui
@@ -92,7 +92,7 @@ ap-tools server stop
 Note that by default the API database will be retained across stop/start. If you'd like to remove this database, run the following from the root of the project 
 
 ```bash
-docker compose down -v
+docker compose down --clear-databases
 ```
 
 ### Restart/Refresh components
@@ -103,21 +103,20 @@ If you start ap-tools using '--local-ui', any changes you make to your ui code s
 
 If you start ap-tools using '--local-api', you will need to manually restart the 'local-api' component in tilt via the [tilt console](http://localhost:10350).
 
-#### Refresh Docker Components
+#### Refresh 3rd Party Components & Databases
 
-If you'd like to refresh docker containers to use their latest version, you can use
+When compose is started all docker containers wll be updated automatically, therefore, stop/starting ap-tools will refresh all containers
+
+If you want to refresh already running containers, use the --refresh option
 
 ```bash
-ap-tools server start --refresh
+ap-tools server stop --refresh
 ```
 
-Note - this _will not_ refresh the approved-premises-and-delius component, as this is run locally via gradle
-
-If you'd like to restart the entire tilt stack and remove the API databases, you can use the following script from the root of the project
+If you'd like to restart the entire stack and remove all databases (including the API database), you can use the following script from the root of the project
 
 ```bash
-ap-tools server stop                                       
-docker compose down -v
+ap-tools server stop --clear-databases     
 ap-tools server start --local-ui --local-api
 ```
 
@@ -135,8 +134,6 @@ We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used
  * NONSTAFFUSER - user that is not staff. shouldn't be allowed access
  * LAOFULLACCESS - user that has whitelisted (exclusion) for X400000
  * LAORESTRICTED - user that is blacklisted (restriction) for X400000
- * ApprovedPremisesTestUser - user for "Future manager" persona in E2E tests
- * SheilaHancockNPS - user for the "CRU member" persona in E2E tests
 
 ### CAS2
 
