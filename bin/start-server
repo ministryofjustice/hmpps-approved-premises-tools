@@ -57,7 +57,7 @@ if [ ${#args} -ge 0 ]; then
   cmd="$cmd -- $args"
 fi
 
-$cmd > /dev/null 2>&1 &
+$cmd 2>&1 >/dev/null &
 
 echo "Waiting for approved-premises-api to be healthy"
 until curl http://localhost:8080/api/health > /dev/null 2>&1; do

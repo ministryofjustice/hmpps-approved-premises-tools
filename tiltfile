@@ -30,6 +30,9 @@ if local_api:
     local_resource(
         "local_api",
         serve_cmd="./gradlew bootRunLocal",
+        # Note! These checks only wait for containers to start, ideally we'd wait for them to be ready
+        # see https://docs.tilt.dev/resource_dependencies.html
+        # "For dc_resource: the container is started (NB: Tilt doesn’t currently observe docker-compose health checks)"
         resource_deps=["database", "redis", "hmpps-auth", "approved-premises-and-delius"],
         serve_dir=os.getenv("LOCAL_CAS_API_PATH"),
         readiness_probe=probe(

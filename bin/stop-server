@@ -15,9 +15,11 @@ done
 
 echo "==> Stopping tilt..."
 
-killall tilt && tilt down -f "$script_dir/../tiltfile"
+tilt down -f "$script_dir/../tiltfile"
+killall tilt
 
 if [ $do_clear_databases -gt 0 ]; then
+  sleep 5
+  
   "$script_dir/utils/clear-databases.sh"
 fi
-
