@@ -63,14 +63,15 @@ services:
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
     volumes:
-      - ./databases/api-db:/var/lib/postgresql/data/
+      # We use a docker managed volume instead of a mapped volume (e.g. 'databases/api') before the
+      # mapped volumes are very slow meaning from scratch postgres startup is taking a very long time
+      # This coupled with the fact that when using --local-api tilt will only check if postgres is running (not ready)
+      # before starting the API is leading to start up failures
+      - database-data-api:/var/lib/postgresql/data/
     ports:
       - "5431:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: pg_isready -U localdev -d approved_premises_localdev
 
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
@@ -250,4 +251,4 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
-  database-data-development:
+  database-data-api:
