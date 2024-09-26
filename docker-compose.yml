@@ -7,27 +7,8 @@ services:
       - database
       - redis
       - hmpps-auth
-    environment:
-      - SPRING_PROFILES_ACTIVE=local
-      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
-      - SERVICES_COMMUNITY-API_BASE-URL=http://community-api:8080
-      - SERVICES_ASSESS-RISKS-AND-NEEDS-API_BASE-URL=http://hmpps-assess-risks-and-needs:8080
-      - SERVICES_HMPPS-TIER_BASE-URL=http://wiremock:8080
-      - SERVICES_PRISONS-API_BASE-URL=http://prison-api:8080
-      - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://wiremock:8080
-      - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://wiremock:8080
-      - SERVICES_CASE-NOTES_BASE-URL=http://wiremock:8080/case-notes
-      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://wiremock:8080
-      # because this service is ran as a tilt local resource (see tiltfile), it's not part of the docker-compose network
-      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://host.docker.internal:8181
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database/approved_premises_localdev
-      - SPRING_DATASOURCE_USERNAME=localdev
-      - SPRING_DATASOURCE_PASSWORD=localdev_password
-      - SPRING_DATA_REDIS_HOST=redis
-      - SPRING_DATA_REDIS_PORT=6379
-      - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
-      - SEED_FILE-PREFIX=/tmp/seed
-      - SEED_AUTO_ENABLED=true
+    env_file:
+      - .env.api.docker
     ports:
       - "8080:8080"
 
