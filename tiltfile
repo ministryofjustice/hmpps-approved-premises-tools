@@ -39,7 +39,7 @@ if local_api:
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
         ),
         serve_env={
-            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api.gradle'
+            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.local.api-gradle'
         }
     )
     resources.append("local_api")
