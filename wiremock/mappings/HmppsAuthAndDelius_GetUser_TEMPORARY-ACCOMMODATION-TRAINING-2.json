@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "(?i)\/user\/TEMPORARY-ACCOMMODATION-TRAINING-2"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 2500077027,
+      "username": "TEMPORARY-ACCOMMODATION-TRAINING-2",
+      "firstName": "temporary-accommodation",
+      "surname": "training-2",
+      "email": "jim.snow@example.digital.justice.gov.uk",
+      "enabled": true,
+      "roles": ["ROLE_PROBATION"]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
