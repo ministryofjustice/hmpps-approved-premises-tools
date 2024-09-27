@@ -37,7 +37,10 @@ if local_api:
         serve_dir=os.getenv("LOCAL_CAS_API_PATH"),
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
-        )
+        ),
+        serve_env={
+            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api.gradle'
+        }
     )
     resources.append("local_api")
 else:
