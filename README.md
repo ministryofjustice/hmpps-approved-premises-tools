@@ -134,6 +134,7 @@ We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used
  * NONSTAFFUSER - user that is not staff. shouldn't be allowed access
  * LAOFULLACCESS - user that has whitelisted (exclusion) for X400000
  * LAORESTRICTED - user that is blacklisted (restriction) for X400000
+ * CRUWOMENSESTTATE - user that will typically be allocated the CRU Member role and Women's Estate CRU Management Area
 
 ### CAS2
 
@@ -213,4 +214,5 @@ These typically align with users defined in the aforementioned sources
  * X320741
  * X400000 exclusion for LAOFULLACCESS (whitelist)
  * X400001 restricted from LAORESTRICTED (blacklist)
+ * S517283 gender=Female
 
