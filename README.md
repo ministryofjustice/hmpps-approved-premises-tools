@@ -81,6 +81,15 @@ You can check on the state of ap-tools by visiting the [tilt console](http://loc
 
 If this is your first time running the tools, you may see a few components fail on their first startup attempt. The [tilt console](http://localhost:10350) provides logs for each component and can be used to restart components. 
 
+#### Start to run e2e against upstream dev services
+
+This will seed the API database with data required to run e2e tests against upstream dev services (i.e. the API database is configured as it would be in the dev/test environments). The API will then be configured to use upstream services in dev, other than hmpps-auth
+
+```bash
+ap-tools server stop --clear-databases
+ap-tools server start --local-ui --local-api-dev-upstream
+```
+
 ### Stop ap-tools
 
 Ap-tools can be stopped using
@@ -92,7 +101,7 @@ ap-tools server stop
 Note that by default the API database will be retained across stop/start. If you'd like to remove this database, run the following from the root of the project 
 
 ```bash
-docker compose down --clear-databases
+ap-tools server stop --clear-databases
 ```
 
 ### Restart/Refresh components
