@@ -81,6 +81,15 @@ You can check on the state of ap-tools by visiting the [tilt console](http://loc
 
 If this is your first time running the tools, you may see a few components fail on their first startup attempt. The [tilt console](http://localhost:10350) provides logs for each component and can be used to restart components. 
 
+#### Start to run e2e against upstream dev services
+
+This will seed the aPI database with data required to run e2e tests against upstream dev services (i.e. the API database is configured as it would be in the dev/test environments)
+
+```bash
+docker compose down --clear-databases
+ap-tools server start --local-ui --local-api-dev-upstream
+```
+
 ### Stop ap-tools
 
 Ap-tools can be stopped using
