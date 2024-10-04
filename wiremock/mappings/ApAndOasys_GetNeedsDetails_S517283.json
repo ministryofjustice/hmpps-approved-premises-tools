@@ -1,8 +1,7 @@
 {
-  "id": "ad9834de-3c9b-4de7-bacf-49f3e984704f",
   "request": {
     "method": "GET",
-    "urlPathPattern": "/needs-details/(.*)"
+    "urlPathPattern": "/needs-details/S517283"
   },
   "response": {
     "headers": {
@@ -33,8 +32,8 @@
         "thinkingBehaviouralIssuesDetails":  "[11.9] The circumstances of the current offence suggest that Mr Smith acted ..."
       },
       "linksToHarm": {
-        "accommodationLinkedToHarm":  true,
-        "educationTrainingEmploymentLinkedToHarm": true,
+        "accommodationLinkedToHarm":  false,
+        "educationTrainingEmploymentLinkedToHarm": false,
         "financeLinkedToHarm":  false,
         "relationshipLinkedToHarm": false,
         "lifestyleLinkedToHarm":  false,
@@ -49,10 +48,10 @@
         "educationTrainingEmploymentLinkedToReOffending":true,
         "financeLinkedToReOffending": false,
         "relationshipLinkedToReOffending":false,
-        "lifestyleLinkedToReOffending": false,
-        "drugLinkedToReOffending":false,
+        "lifestyleLinkedToReOffending": true,
+        "drugLinkedToReOffending":true,
         "alcoholLinkedToReOffending": true,
-        "emotionalLinkedToReOffending":false,
+        "emotionalLinkedToReOffending":true,
         "thinkingBehaviouralLinkedToReOffending": false,
         "attitudeLinkedToReOffending": false
       }
