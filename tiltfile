@@ -29,7 +29,7 @@ if local_api:
     resources.remove("api")
     local_resource(
         "local_api",
-        serve_cmd="./gradlew bootRunLocal",
+        serve_cmd="./gradlew bootRunDebug",
         # Note! These checks only wait for containers to start, ideally we'd wait for them to be ready
         # see https://docs.tilt.dev/resource_dependencies.html
         # "For dc_resource: the container is started (NB: Tilt doesn’t currently observe docker-compose health checks)"
@@ -39,7 +39,7 @@ if local_api:
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
         ),
         serve_env={
-            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.local.api-gradle'
+            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api'
         }
     )
     resources.append("local_api")

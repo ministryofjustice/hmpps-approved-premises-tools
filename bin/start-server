@@ -1,12 +1,14 @@
 #!/bin/sh
 
 set -e
-
-args=""
+script_dir=$(dirname "$0")
+. "$script_dir"/utils/resolve_template.sh
 
 do_update=1
 do_refresh=0
-script_dir=$(dirname "$0")
+local_ui=0
+local_api=0
+local_api_dev_upstream=0
 
 while [ "$1" != "" ];
 do
@@ -16,14 +18,21 @@ do
           echo "Path to local UI not found, please ensure you have set the LOCAL_CAS_UI_PATH environment variable and try again"
           exit 1
         fi
-        args="$args --local-ui"
+        local_ui=1
         ;;
     --local-api)
         if [ -z "${LOCAL_CAS_API_PATH}" ]; then
           echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
           exit 1
         fi
-        args="$args --local-api"
+        local_api=1
+        ;;
+    --local-api-dev-upstream)
+        if [ -z "${LOCAL_CAS_API_PATH}" ]; then
+          echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
+          exit 1
+        fi
+        local_api_dev_upstream=1
         ;;
     --refresh)
         do_refresh=1
@@ -51,11 +60,28 @@ echo "Starting the Approved Premises Stack. This might take a moment. Logs avail
 
 mkdir -p "$script_dir"/../databases
 
-cmd="tilt up -f $script_dir/../tiltfile"
-
-if [ ${#args} -ge 0 ]; then
-  cmd="$cmd -- $args"
+tiltArgs=""
+if [ $local_api_dev_upstream -gt 0 ]; then
+  resolve_template "$script_dir/../.env.api.dev-upstream-gradle" "$script_dir/../.env.api"
+  tiltArgs="$tiltArgs --local-api"
+elif [ $local_api -gt 0 ]; then
+  resolve_template "$script_dir/../.env.api.local-gradle" "$script_dir/../.env.api"
+  tiltArgs="$tiltArgs --local-api"
+else
+  resolve_template "$script_dir/../.env.api.local-docker" "$script_dir/../.env.api"
 fi
+
+if [ $local_ui -gt 0 ]; then
+  tiltArgs="$tiltArgs --local-ui"
+fi
+
+echo "==> Starting Tilt"
+cmd="tilt up -f $script_dir/../tiltfile"
+if [ ${#tiltArgs} -ge 0 ]; then
+  cmd="$cmd -- $tiltArgs"
+fi
+
+echo "Starting tilt with $cmd"
 
 $cmd 2>&1 >/dev/null &
 
@@ -74,6 +100,7 @@ echo "   JIMSNOWLDAP - user with all possible roles"
 echo "   NONSTAFFUSER - user that is not staff"
 echo "   LAOFULLACCESS - user that has whitelisted (exclusion) for X400000"
 echo "   LAORESTRICTED - user that is blacklisted (restriction) for X400000"
+echo "   CRUWOMENSESTATE - user that the API will place in the women's estate CRU Management Area"
 echo "   ApprovedPremisesTestUser - used for 'Future manager' persona in E2E tests"
 echo ""
 echo "For CAS2, use the Nomis users"
@@ -89,6 +116,7 @@ echo ""
 echo "   X320741 (NOMS_NUMBER: A1234AI)"
 echo "   X400000 exclusion for LAOFULLACCESS (whitelist)"
 echo "   X400001 restricted from LAORESTRICTED (blacklist)"
-echo "   C246139 (NOMS_NUMBER: A1234AJ), partially supported"
+echo "   X400001 restricted from LAORESTRICTED (blacklist)"
+echo "   S517283 female offender"
 
 exit 0
