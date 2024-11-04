@@ -183,6 +183,8 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
       - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
+      - HMPPS_SQS_PROVIDER=localstack
+      - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
 
   auth-db:
     image: postgres:15
