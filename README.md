@@ -220,8 +220,8 @@ These typically align with users defined in the aforementioned sources
 
 ## Test Offender CRNs
 
- * X320741
- * X400000 exclusion for LAOFULLACCESS (whitelist)
- * X400001 restricted from LAORESTRICTED (blacklist)
- * S517283 gender=Female
+ * X320741 (NOMS: A1234AI)
+ * X400000 (NOMS: A1235AI) exclusion for LAOFULLACCESS (whitelist)
+ * X400001 (NOMS: A1236AI) restricted from LAORESTRICTED (blacklist)
+ * S517283 (NOMS: A1237AI) gender=Female
 
