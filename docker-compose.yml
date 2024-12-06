@@ -171,7 +171,7 @@ services:
     container_name: hmpps-external-users-api
     pull_policy: always
     depends_on:
-      - auth-db
+      - auth-db-external-users
       - hmpps-auth
     ports:
       - "9565:8098"
@@ -180,8 +180,8 @@ services:
     environment:
       - SERVER_PORT=8098
       - SPRING_PROFILES_ACTIVE=dev,local-postgres
-      - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
-      - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db:5432/auth-db?sslmode=prefer
+      - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
+      - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
       - HMPPS_SQS_PROVIDER=localstack
       - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
@@ -192,6 +192,22 @@ services:
     restart: always
     ports:
       - "5434:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin_password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=auth-db
+    healthcheck:
+      test: pg_isready -d auth-db
+
+  # we should be able to share auth-db with hmpps-external-users-api
+  # (see https://github.com/ministryofjustice/hmpps-external-users-api/blob/main/README.md)
+  # but currently the flyway scripts are out of sync
+  auth-db-external-users:
+    image: postgres:15
+    container_name: auth-db-external-users
+    restart: always
+    ports:
+      - "5534:5432"
     environment:
       - POSTGRES_PASSWORD=admin_password
       - POSTGRES_USER=admin
