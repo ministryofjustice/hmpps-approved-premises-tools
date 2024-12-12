@@ -16,7 +16,6 @@ resources = [
     "hmpps-external-users-api",
     "auth-db",
     "hmpps-auth",
-    "community-api",
     "wiremock",
     "database",
     "prison-api",
