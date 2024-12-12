@@ -137,7 +137,7 @@ Once ap-tools has started and the [tilt console](http://localhost:10350) is all 
 
 ### CAS1 & CAS 3 (Delius)
 
-We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used for passwords as we mock community API authentication using wiremock, and do not check passwords
+We login to CAS1 and CAS3 Systems using delius credentials. Anything can be used for passwords as we mock the authentication used by hmpps-auth using wiremock, and do not check passwords
 
  * JIMSNOWLDAP - used that has all roles
  * NONSTAFFUSER - user that is not staff. shouldn't be allowed access
@@ -201,11 +201,6 @@ We can add test users via the [Data Loader](https://github.com/ministryofjustice
 
 Also note that if the user requires an email address, an entry also needs adding to https://github.com/ministryofjustice/hmpps-probation-integration-services/blob/main/projects/approved-premises-and-delius/src/dev/resources/schema.ldif
 
-### Community API (Staff Details)
-
-Note - We're in the processing of removing usage of community API to retrieve staff information in favour of the approved-premises-and-delius API. Until that's done, we need to sync our test users defined in Approved Premises and Delius API with those defined in Community PAI
-
-Test users are managed by SQL Seed files added via /seed/community-api
 
 ### CAS API (Roles)
 
