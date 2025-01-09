@@ -11,12 +11,15 @@ services:
       - .env.api
     ports:
       - "8080:8080"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
 
   frontend:
     image: quay.io/hmpps/hmpps-approved-premises-ui:latest
     container_name: approved-premises-ui-dev
     pull_policy: always
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=approved-premises-redis-dev
       - REDIS_PORT=6379
       - REDIS_TLS_ENABLED=false
@@ -40,6 +43,7 @@ services:
     image: "postgis/postgis"
     container_name: approved-premises-postgres-dev
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_USER=localdev
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
@@ -67,6 +71,7 @@ services:
     healthcheck:
       test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SPRING_PROFILES_ACTIVE=dev,nomis,delius,local-postgres
       - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
@@ -96,6 +101,7 @@ services:
     ports:
       - "9570:8080"
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
       - SPRING_DATASOURCE_URL=jdbc:hsqldb:file:/nomis-db/nomisdb;sql.syntax_ora=true;get_column_name=false;shutdown=false;sql.nulls_first=false;sql.nulls_order=false;hsqldb.lock_file=false
@@ -124,6 +130,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
@@ -140,6 +147,7 @@ services:
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8096/health/ping" ]
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVER_PORT=8096
       - HMPPS_AUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
@@ -160,6 +168,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8098/health/ping"]
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVER_PORT=8098
       - SPRING_PROFILES_ACTIVE=dev,local-postgres
       - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
@@ -175,6 +184,7 @@ services:
     ports:
       - "5434:5432"
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_PASSWORD=admin_password
       - POSTGRES_USER=admin
       - POSTGRES_DB=auth-db
@@ -191,6 +201,7 @@ services:
     ports:
       - "5534:5432"
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_PASSWORD=admin_password
       - POSTGRES_USER=admin
       - POSTGRES_DB=auth-db
@@ -201,6 +212,7 @@ services:
     image: "bitnami/redis:7.2.5"
     container_name: approved-premises-redis-dev
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
@@ -211,6 +223,7 @@ services:
     image: ghcr.io/joeferner/redis-commander:latest
     restart: always
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOSTS=frontend:approved-premises-redis-dev:6379:0,api-cache:approved-premises-redis-dev:6379:5
     ports:
       - "7341:8081"
@@ -223,6 +236,7 @@ services:
       - "4571:4571"
       - 8999:8080
     environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVICES=sns,sqs
       - DEBUG=${DEBUG- }
       - DOCKER_HOST=unix:///var/run/docker.sock
