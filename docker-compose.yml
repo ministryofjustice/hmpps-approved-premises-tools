@@ -175,6 +175,7 @@ services:
       - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
       - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
       - HMPPS_SQS_PROVIDER=localstack
+      - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
       - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
 
   auth-db:
