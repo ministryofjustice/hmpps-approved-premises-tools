@@ -160,6 +160,8 @@ services:
     image: quay.io/hmpps/hmpps-external-users-api:latest
     container_name: hmpps-external-users-api
     pull_policy: always
+    volumes:
+      - ./seed/hmpps-external-users-api:/seed
     depends_on:
       - auth-db-external-users
       - hmpps-auth
