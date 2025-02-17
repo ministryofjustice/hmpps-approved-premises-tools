@@ -62,6 +62,8 @@ services:
     image: quay.io/hmpps/hmpps-auth:latest
     container_name: hmpps-auth
     pull_policy: always
+    depends_on:
+      - auth-db
     ports:
       - "9091:8080"
       - "5001:5005"
