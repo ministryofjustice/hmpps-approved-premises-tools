@@ -204,7 +204,7 @@ Also note that if the user requires an email address, an entry also needs adding
 
 ### CAS API (Roles)
 
-CAS 1 & 3 Roles are defined in the API DAtabase. For CAS1 there is a user interface to manage roles.
+CAS 1 & 3 Roles are defined in the API Database. For CAS1 there is a user interface to manage roles.
 
 The CAS API will auto-populate test users with roles via
 
