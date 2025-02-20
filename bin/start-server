@@ -9,6 +9,7 @@ do_refresh=0
 local_ui=0
 local_api=0
 local_api_dev_upstream=0
+second_local_ui=0
 
 while [ "$1" != "" ];
 do
@@ -19,6 +20,14 @@ do
           exit 1
         fi
         local_ui=1
+        ;;
+    --second-local-ui)
+        if [ -z "${SECOND_LOCAL_CAS_UI_PATH}" ]; then
+          echo "Path to second local UI not found, please ensure you have set the SECOND_LOCAL_CAS_UI_PATH environment variable and try again"
+          exit 1
+        fi
+        echo "second local ui found"
+        second_local_ui=1
         ;;
     --local-api)
         if [ -z "${LOCAL_CAS_API_PATH}" ]; then
@@ -73,6 +82,10 @@ fi
 
 if [ $local_ui -gt 0 ]; then
   tiltArgs="$tiltArgs --local-ui"
+fi
+
+if [ $second_local_ui -gt 0 ]; then
+  tiltArgs="$tiltArgs --second-local-ui"
 fi
 
 echo "==> Starting Tilt"
