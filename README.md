@@ -48,8 +48,9 @@ Then add the path to these checked out projects in your ~/.zsrhc file:
 
 ```bash
 # ~/.zshrc
-export LOCAL_CAS_API_PATH=/Users/david.atkins/git-clones/hmpps-approved-premises-api
-export LOCAL_CAS_UI_PATH=/Users/david.atkins/git-clones/hmpps-approved-premises-ui
+export LOCAL_CAS_API_PATH=/Users/your-directories/hmpps-approved-premises-api
+export LOCAL_CAS_UI_PATH=/Users/your-directories/hmpps-approved-premises-ui
+export SECOND_LOCAL_CAS_UI_PATH=/Users/your-directories/hmpps-temporary-accommodation-ui
 ```
 
 Note! We currently only support running 1 UI at any time, populate LOCAL_CAS_UI_PATH with which ever you'd like to use
@@ -67,10 +68,17 @@ export PATH="$PATH:/<path-to-approved-premises-tools>/bin"
 
 ### Start ap-tools
 
-We typically run ap-tools passing in the '--local-api and --local-ui' arguments to run the locally cloned versions of the projects
+We typically run ap-tools passing in the '--local-api and --local-ui' arguments to run the locally cloned versions of the projects.
+
 
 ```bash
 ap-tools server start --local-ui --local-api
+```
+
+To run two UIs locally use the 'second ui- flag, if you do not use this flag, a second UI will not be created from the docker image. This is just for having multiple UIs working locally on your machine.
+
+```bash
+ap-tools server start --local-ui --local-api --second-local-ui
 ```
 
 If you drop the '--local-*' arguments, the most recently published docker images will be run instead.

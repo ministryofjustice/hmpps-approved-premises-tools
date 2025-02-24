@@ -2,11 +2,13 @@ docker_compose("./docker-compose.yml")
 
 config.define_bool("local-api")
 config.define_bool("local-ui")
+config.define_bool("second-local-ui")
 
 cfg = config.parse()
 
 local_api = cfg.get("local-api", False)
 local_ui = cfg.get("local-ui", False)
+second_local_ui = cfg.get("second-local-ui", False)
 
 resources = [
     "api",
@@ -69,6 +71,27 @@ if local_ui:
         }
     )
     resources.append("local_ui")
+
+if second_local_ui:
+    local_resource(
+        "second_local_ui",
+        cmd="npm install",
+        serve_cmd="PORT=3002 npm run start:dev",
+        serve_dir=os.getenv("SECOND_LOCAL_CAS_UI_PATH"),
+        dir=os.getenv("SECOND_LOCAL_CAS_UI_PATH"),
+        resource_deps=["hmpps-auth"],
+        readiness_probe=probe(
+            period_secs=15, http_get=http_get_action(port=3002, path="/health")
+        ),
+        serve_env={
+            "APPROVED_PREMISES_API_URL": "http://localhost:8080",
+            "HMPPS_AUTH_URL": "http://localhost:9091/auth",
+            "HMPPS_AUTH_EXTERNAL_URL": "http://localhost:9091/auth",
+            "TOKEN_VERIFICATION_API_URL": "http://localhost:9091/verification",
+            "PROVIDE_PERFORMANCE_HUB_REPORTS": "true",
+        }
+    )
+    resources.append("second_local_ui")
 
 local_resource(
     "approved-premises-and-delius",

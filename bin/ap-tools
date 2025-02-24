@@ -11,6 +11,7 @@ elif [ "$command" = "--help" ]; then
   echo "  server stop"
   echo "Options:"
   echo "  --local-ui"
+  echo "  --second-local-ui"
   echo "  --local-api"
   echo "  --refresh"
   echo "  --no-update"
