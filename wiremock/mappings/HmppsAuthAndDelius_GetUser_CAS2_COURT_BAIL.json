@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "(?i)\/user\/CAS2V2_DELIUS_CB"
+  },
+  "response": {
+    "transformers": ["response-template"],
+    "status": 200,
+    "jsonBody": {
+      "userId": 2500077027,
+      "username": "CAS2V2_DELIUS_CB",
+      "firstName": "Courtney",
+      "surname": "Delius-Clark",
+      "email": "courtney.deliusclark@example.com",
+      "enabled": true,
+      "roles": ["CAS2_COURT_BAIL"]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
