@@ -8,7 +8,7 @@
     "transformers": ["response-template"],
     "status": 200,
     "jsonBody": {
-      "userId": 2500077027,
+      "userId": 2500077902,
       "username": "CAS2V2_DELIUS_PB",
       "firstName": "Nick",
       "surname": "Delius-Bail",
