@@ -43,6 +43,7 @@ To support this, clone the API project and required UI project(s) e.g.
 * https://github.com/ministryofjustice/hmpps-approved-premises-ui
 * https://github.com/ministryofjustice/hmpps-temporary-accommodation-ui
 * https://github.com/ministryofjustice/hmpps-community-accommodation-tier-2-ui
+* https://github.com/ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui
 
 Then add the path to these checked out projects in your ~/.zsrhc file:
 
