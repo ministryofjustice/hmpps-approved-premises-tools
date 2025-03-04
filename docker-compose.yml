@@ -87,7 +87,6 @@ services:
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
       - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth-db
-      - MANAGE-USERS-API_ENABLED=true
 
   wiremock:
     image: wiremock/wiremock
