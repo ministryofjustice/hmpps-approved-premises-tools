@@ -1,0 +1,25 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "urlPattern": "(?i)\/roles\/delius"
+  },
+  "response": {
+    "transformers": [
+      "response-template"
+    ],
+    "status": 200,
+    "jsonBody": {
+      "CAS2_COURT_BAIL": [
+        "CAS2_COURT_BAIL",
+        "CAS2_COURT_BAIL_REFERRER"
+      ],"CAS2_PRISON_BAIL": [
+        "CAS2_PRISON_BAIL",
+        "CAS2_PRISON_BAIL_REFERRER"
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

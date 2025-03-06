@@ -10,6 +10,7 @@ local_ui=0
 local_api=0
 local_api_dev_upstream=0
 second_local_ui=0
+enable_manage_users_api=0
 
 while [ "$1" != "" ];
 do
@@ -48,6 +49,9 @@ do
         ;;
     --no-update)
         do_update=0
+        ;;
+    --enable_manage_users_api)
+        export MANAGE_USERS_API_ENABLED=true
         ;;
   esac
   shift
@@ -134,8 +138,8 @@ echo "  | CAS2V2_NOMIS_CB  | Nomis   | password123456  | CAS2_COURT_BAIL_REFERRE
 echo "  | CAS2V2_NOMIS_PB  | Nomis   | password123456  | CAS2_PRISON_BAIL_REFERRER |"
 echo ""
 echo "  When starting an application use these to find an offender:"
-echo "    Search by CRN:           A1234AX"
-echo "    Search by prison number: DO16821"
+echo "    Search by CRN:           X320742"
+echo "    Search by prison number: A1234AX"
 echo ""
 echo "CRNS"
 echo ""

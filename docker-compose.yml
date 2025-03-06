@@ -87,7 +87,8 @@ services:
       - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
       - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
       - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth-db
-      - MANAGE-USERS-API_ENABLED=true
+      - MANAGE-USERS-API_ENABLED=${MANAGE_USERS_API_ENABLED:-false}
+      - MANAGE_USERS_API_ENDPOINT_URL=http://wiremock:8080
 
   wiremock:
     image: wiremock/wiremock
