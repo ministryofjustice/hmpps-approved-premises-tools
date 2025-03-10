@@ -11,10 +11,10 @@
       "userId": 2500077027,
       "username": "CAS2V2_DELIUS_CB",
       "firstName": "Courtney",
-      "surname": "Delius-Clark",
-      "email": "courtney.deliusclark@example.com",
+      "surname": "Delius-Bail",
+      "email": "courtney.deliusbail@example.com",
       "enabled": true,
-      "roles": ["CAS2_COURT_BAIL"]
+      "roles": ["ROLE_CAS2_COURT_BAIL"]
     },
     "headers": {
       "Content-Type": "application/json"
