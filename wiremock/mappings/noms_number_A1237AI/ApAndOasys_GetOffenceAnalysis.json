@@ -1,0 +1,15 @@
+{
+  "id": "b2dd8fb8-24fa-49e5-beb6-ce75b3ddd2f3",
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/offence-details/S517283"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 404,
+    "body": "{\"message\":\"Resource not found\"}"
+  }
+}
