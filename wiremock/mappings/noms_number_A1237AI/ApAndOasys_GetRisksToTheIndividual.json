@@ -1,0 +1,15 @@
+{
+  "id": "218c0dc0-2333-4baa-9a73-89627aac18e4",
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/risk-to-the-individual/S517283"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 404,
+    "body": "{\"message\":\"Resource not found\"}"
+  }
+}
