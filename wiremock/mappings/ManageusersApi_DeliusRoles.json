@@ -10,10 +10,10 @@
     ],
     "status": 200,
     "jsonBody": {
-      "ROLE_CAS2_COURT_BAIL": [
-        "ROLE_CAS2_COURT_BAIL"
-      ],"ROLE_CAS2_PRISON_BAIL": [
-        "ROLE_CAS2_PRISON_BAIL"
+      "ROLE_CAS2_COURT_BAIL_REFERRER": [
+        "ROLE_CAS2_COURT_BAIL_REFERRER"
+      ],"ROLE_CAS2_PRISON_BAIL_REFERRER": [
+        "ROLE_CAS2_PRISON_BAIL_REFERRER"
       ]
     },
     "headers": {
