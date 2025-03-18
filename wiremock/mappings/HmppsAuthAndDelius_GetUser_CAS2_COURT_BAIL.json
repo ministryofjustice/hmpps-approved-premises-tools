@@ -14,7 +14,7 @@
       "surname": "Delius-Bail",
       "email": "courtney.deliusbail@example.com",
       "enabled": true,
-      "roles": ["ROLE_CAS2_COURT_BAIL"]
+      "roles": ["ROLE_CAS2_COURT_BAIL_REFERRER"]
     },
     "headers": {
       "Content-Type": "application/json"
