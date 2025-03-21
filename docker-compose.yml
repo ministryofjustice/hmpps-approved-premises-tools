@@ -95,6 +95,7 @@ services:
     container_name: wiremock
     ports:
       - "9004:8080"
+      - "9580:8080"
     volumes:
       - ./wiremock:/home/wiremock
     command: "--global-response-templating"
