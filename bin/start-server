@@ -1,16 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -e
-script_dir=$(dirname "$0")
-. "$script_dir"/utils/resolve_template.sh
+# shellcheck disable=SC3040
+set -o pipefail
 
-do_update=1
-do_refresh=0
+cd "$(dirname "$0")"
+script_dir="$(pwd)"
+
+. "$script_dir"/utils/resolve_secrets.sh
+
 local_ui=0
 local_api=0
-local_api_dev_upstream=0
-second_local_ui=0
-enable_manage_users_api=0
 
 while [ "$1" != "" ];
 do
@@ -22,14 +22,6 @@ do
         fi
         local_ui=1
         ;;
-    --second-local-ui)
-        if [ -z "${SECOND_LOCAL_CAS_UI_PATH}" ]; then
-          echo "Path to second local UI not found, please ensure you have set the SECOND_LOCAL_CAS_UI_PATH environment variable and try again"
-          exit 1
-        fi
-        echo "second local ui found"
-        second_local_ui=1
-        ;;
     --local-api)
         if [ -z "${LOCAL_CAS_API_PATH}" ]; then
           echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
@@ -37,59 +29,31 @@ do
         fi
         local_api=1
         ;;
-    --local-api-dev-upstream)
-        if [ -z "${LOCAL_CAS_API_PATH}" ]; then
-          echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
-          exit 1
-        fi
-        local_api_dev_upstream=1
-        ;;
-    --refresh)
-        do_refresh=1
-        ;;
-    --no-update)
-        do_update=0
-        ;;
-    --enable_manage_users_api)
-        export MANAGE_USERS_API_ENABLED=true
-        ;;
   esac
   shift
 done
 
-if [ $do_update -gt 0 ]; then
-  if "$script_dir/utils/check-for-update.sh"; then
-    do_refresh=1
-  fi
-fi
-
-if [ $do_refresh -gt 0 ]; then
-  "$script_dir/utils/refresh-containers.sh"
-fi
-
-"$script_dir/utils/install-or-update-integration-services.sh"
-
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
-mkdir -p "$script_dir"/../databases
+api_secret_names=("hmpps-approved-premises-api")
+resolve_secrets "$script_dir/../.env.api.template" \
+                "$script_dir/../.env.api" \
+                "hmpps-community-accommodation-dev" \
+                "${api_secret_names[@]}"
+
+ui_secret_names=("hmpps-approved-premises-ui")
+resolve_secrets "$script_dir/../.env.ui.template" \
+                "$script_dir/../.env.ui" \
+                "hmpps-community-accommodation-dev" \
+                "${ui_secret_names[@]}"
 
 tiltArgs=""
-if [ $local_api_dev_upstream -gt 0 ]; then
-  resolve_template "$script_dir/../.env.api.dev-upstream-gradle" "$script_dir/../.env.api"
+if [ $local_api -gt 0 ]; then
   tiltArgs="$tiltArgs --local-api"
-elif [ $local_api -gt 0 ]; then
-  resolve_template "$script_dir/../.env.api.local-gradle" "$script_dir/../.env.api"
-  tiltArgs="$tiltArgs --local-api"
-else
-  resolve_template "$script_dir/../.env.api.local-docker" "$script_dir/../.env.api"
 fi
 
 if [ $local_ui -gt 0 ]; then
   tiltArgs="$tiltArgs --local-ui"
-fi
-
-if [ $second_local_ui -gt 0 ]; then
-  tiltArgs="$tiltArgs --second-local-ui"
 fi
 
 echo "==> Starting Tilt"
@@ -111,46 +75,6 @@ done
 echo ""
 echo "Stack running! You will be able to log into the application at http://localhost:3000"
 echo ""
-echo "For CAS1 and CAS3 use the Delius users. Any password can be used."
-echo ""
-echo "   JIMSNOWLDAP - user with all possible roles"
-echo "   NONSTAFFUSER - user that is not staff"
-echo "   LAOFULLACCESS - user that has whitelisted (exclusion) for X400000"
-echo "   LAORESTRICTED - user that is blacklisted (restriction) for X400000"
-echo "   CRUWOMENSESTATE - user that the API will place in the women's estate CRU Management Area"
-echo "   ApprovedPremisesTestUser - used for 'Future manager' persona in E2E tests"
-echo ""
-echo "For CAS2, use the Nomis users"
-echo ""
-echo "   POM_USER/password123456"
-echo "   CAS2_MI_USER/password123456 - ROLE_CAS2_MI"
-echo "   CAS2_ADMIN_USER/password123456 - ROLE_CAS2_ADMIN"
-echo "   CAS2_LICENCE_USER/password123456 - ROLE_LICENCE_CA"
-echo "   External user CAS2_ASSESSOR_USER/password123456 - ROLE_CAS2_ASSESSOR"
-echo ""
-echo "For CAS2v2, use the both Nomis and nDelius users"
-echo ""
-echo "  | username         | source  | password        | roles                     |"
-echo "  |------------------|---------|-----------------|---------------------------|"
-echo "  | CAS2V2_DELIUS_CB | nDelius | *any*           | CAS2_COURT_BAIL_REFERRER  |"
-echo "  | CAS2V2_DELIUS_PB | nDelius | *any*           | CAS2_PRISON_BAIL_REFERRER |"
-echo "  | CAS2V2_NOMIS_CB  | Nomis   | password123456  | CAS2_COURT_BAIL_REFERRER  |"
-echo "  | CAS2V2_NOMIS_PB  | Nomis   | password123456  | CAS2_PRISON_BAIL_REFERRER |"
-echo ""
-echo "  We have a number of offender that can be search for in the bail application"
-echo ""
-echo "  | Name              | NOMS    | CRN     | Excluded  | Restricted |"
-echo "  |-------------------|---------|---------|-----------|------------|"
-echo "  | Ivor Record       | DO16821 | X320742 | false     | false      |"
-echo "  | Marsha Crist      | A8767EA | X823998 | true      | false      |"
-echo "  | Chester Luettgen  | A5276DZ | X698234 | true      | true       |"
-echo ""
-echo "CRNS"
-echo ""
-echo "   X320741 (NOMS_NUMBER: A1234AI)"
-echo "   X400000 exclusion for LAOFULLACCESS (whitelist)"
-echo "   X400001 restricted from LAORESTRICTED (blacklist)"
-echo "   X400001 restricted from LAORESTRICTED (blacklist)"
-echo "   S517283 female offender"
+echo "See 1Password for login credentials"
 
 exit 0
