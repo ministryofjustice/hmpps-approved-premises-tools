@@ -13,16 +13,9 @@ second_local_ui = cfg.get("second-local-ui", False)
 resources = [
     "api",
     "frontend",
-    "nomis-user-roles-api",
-    "hmpps-manage-users-api",
-    "hmpps-external-users-api",
-    "auth-db",
-    "hmpps-auth",
     "wiremock",
     "database",
-    "prison-api",
     "redis",
-    "hmpps-auth",
     "localstack",
 ]
 
@@ -34,20 +27,20 @@ if local_api:
         # Note! These checks only wait for containers to start, ideally we'd wait for them to be ready
         # see https://docs.tilt.dev/resource_dependencies.html
         # "For dc_resource: the container is started (NB: Tilt doesn’t currently observe docker-compose health checks)"
-        resource_deps=["database", "redis", "hmpps-auth", "approved-premises-and-delius"],
+        resource_deps=["database", "redis"],
         serve_dir=os.getenv("LOCAL_CAS_API_PATH"),
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
         ),
         serve_env={
-            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api'
+            "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api.dev-upstream-gradle'
         }
     )
     resources.append("local_api")
 else:
     dc_resource(
         "api",
-        resource_deps=["approved-premises-and-delius"]
+        resource_deps=[]
     )
 
 if local_ui:
@@ -58,15 +51,11 @@ if local_ui:
         serve_cmd="npm run start:dev",
         serve_dir=os.getenv("LOCAL_CAS_UI_PATH"),
         dir=os.getenv("LOCAL_CAS_UI_PATH"),
-        resource_deps=["hmpps-auth"],
+        resource_deps=[],
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=3000, path="/health")
         ),
         serve_env={
-            "APPROVED_PREMISES_API_URL": "http://localhost:8080",
-            "HMPPS_AUTH_URL": "http://localhost:9091/auth",
-            "HMPPS_AUTH_EXTERNAL_URL": "http://localhost:9091/auth",
-            "TOKEN_VERIFICATION_API_URL": "http://localhost:9091/verification",
             "PROVIDE_PERFORMANCE_HUB_REPORTS": "true",
         }
     )
@@ -79,46 +68,15 @@ if second_local_ui:
         serve_cmd="PORT=3002 npm run start:dev",
         serve_dir=os.getenv("SECOND_LOCAL_CAS_UI_PATH"),
         dir=os.getenv("SECOND_LOCAL_CAS_UI_PATH"),
-        resource_deps=["hmpps-auth"],
+        resource_deps=[],
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=3002, path="/health")
         ),
         serve_env={
-            "APPROVED_PREMISES_API_URL": "http://localhost:8080",
-            "HMPPS_AUTH_URL": "http://localhost:9091/auth",
-            "HMPPS_AUTH_EXTERNAL_URL": "http://localhost:9091/auth",
-            "TOKEN_VERIFICATION_API_URL": "http://localhost:9091/verification",
             "PROVIDE_PERFORMANCE_HUB_REPORTS": "true",
         }
     )
     resources.append("second_local_ui")
-
-local_resource(
-    "approved-premises-and-delius",
-    serve_cmd="./gradlew approved-premises-and-delius:bootRun",
-    serve_dir= config.main_dir + "/hmpps-probation-integration-services",
-    readiness_probe=probe(
-        period_secs=5, http_get=http_get_action(port=8181, path="/health")
-    ),
-    serve_env={
-        "SERVER_PORT": "8181",
-        "SPRING_PROFILES_ACTIVE": "dev",
-        "WIREMOCK_PORT": "7874",
-        "INTEGRATIONS_APPROVED-PREMISES-API_URL": "http://localhost:8080",
-        "LOGGING_LEVEL_UK_GOV_JUSTICE_DIGITAL_HMPPS": "DEBUG",
-        "LOGGING_LEVEL_SECURITY_OAUTH2_CLIENT": "DEBUG",
-        "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY": "DEBUG",
-        "SPRING_JPA_SHOW-SQL": "true",
-        "OAUTH2_CLIENT-ID": "approved-premises-api",
-        "OAUTH2_CLIENT-SECRET": "clientsecret",
-        "SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_HMPPS-AUTH_TOKEN-URI": "http://localhost:9091/auth/oauth/token",
-        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI": "http://localhost:9091/auth/.well-known/jwks.json",
-        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI": "http://localhost:9091/auth/issuer",
-        "SPRING_DATASOURCE_URL": "jdbc:h2:file:" + config.main_dir + "/databases/approved-premises-and-delius-db/dev;MODE=Oracle;DEFAULT_NULL_ORDERING=HIGH;AUTO_SERVER=true;AUTO_SERVER_PORT=9092"
-    },
-)
-
-resources.append("approved-premises-and-delius")
 
 config.clear_enabled_resources()
 config.set_enabled_resources(resources)

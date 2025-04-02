@@ -67,8 +67,6 @@ if [ $do_refresh -gt 0 ]; then
   "$script_dir/utils/refresh-containers.sh"
 fi
 
-"$script_dir/utils/install-or-update-integration-services.sh"
-
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
 mkdir -p "$script_dir"/../databases
@@ -76,9 +74,6 @@ mkdir -p "$script_dir"/../databases
 tiltArgs=""
 if [ $local_api_dev_upstream -gt 0 ]; then
   resolve_template "$script_dir/../.env.api.dev-upstream-gradle" "$script_dir/../.env.api"
-  tiltArgs="$tiltArgs --local-api"
-elif [ $local_api -gt 0 ]; then
-  resolve_template "$script_dir/../.env.api.local-gradle" "$script_dir/../.env.api"
   tiltArgs="$tiltArgs --local-api"
 else
   resolve_template "$script_dir/../.env.api.local-docker" "$script_dir/../.env.api"
