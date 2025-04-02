@@ -1,2 +1,2 @@
-brew "yq"
+brew "jq"
 brew "tilt"

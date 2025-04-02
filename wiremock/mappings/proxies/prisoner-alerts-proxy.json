@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/prisoner-alerts-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://alerts-api-dev.hmpps.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/prisoner-alerts-proxy"
+  }
+}
