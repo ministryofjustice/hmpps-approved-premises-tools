@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/ap-and-oasys-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://approved-premises-and-oasys-dev.hmpps.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/ap-and-oasys-proxy"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/hmpps-tier-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://hmpps-tier-dev.hmpps.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/hmpps-tier-proxy"
+  }
+}

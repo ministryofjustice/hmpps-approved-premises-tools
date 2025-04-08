@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 command=$1 ; shift
 
@@ -11,10 +11,7 @@ elif [ "$command" = "--help" ]; then
   echo "  server stop"
   echo "Options:"
   echo "  --local-ui"
-  echo "  --second-local-ui"
   echo "  --local-api"
-  echo "  --refresh"
-  echo "  --no-update"
   
 else
   echo "Unknown command $1"
