@@ -76,7 +76,12 @@ services:
       - "9004:8080"
     volumes:
       - ./wiremock:/home/wiremock
-    command: "--global-response-templating"
+    command: "--global-response-templating --verbose"
+    healthcheck:
+      # we use a custom healthcheck because calling /health
+      # in wiremock outputs in verbose request/response logs, and
+      # we're not interested in seeing this request
+      test: bash -c "exec 6<> /dev/tcp/localhost/8080"
 
   redis:
     image: "bitnami/redis:7.2.5"
