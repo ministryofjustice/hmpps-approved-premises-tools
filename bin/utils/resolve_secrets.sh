@@ -50,5 +50,8 @@ resolve_secrets() {
     rm -f "$target"
     # resolve 'variables' in source with env vars
     envsubst < "$source" > "$target"
+    # remove comments from the resultant file
+    # -i '' is required for mac os, see https://stackoverflow.com/questions/26081375
+    sed -i '' '/^#/d' "$target"
   )
 }
