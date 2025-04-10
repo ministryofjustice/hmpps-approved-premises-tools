@@ -8,6 +8,7 @@ cd "$(dirname "$0")"
 script_dir="$(pwd)"
 
 . "$script_dir"/utils/resolve_secrets.sh
+. "$script_dir"/utils/override_ui_props_with_local_ui_props.sh
 
 local_ui=0
 local_api=0
@@ -53,6 +54,7 @@ if [ $local_api -gt 0 ]; then
 fi
 
 if [ $local_ui -gt 0 ]; then
+  override_ui_props_with_local_ui_props "$script_dir/../.env.ui"
   tiltArgs="$tiltArgs --local-ui"
 fi
 
