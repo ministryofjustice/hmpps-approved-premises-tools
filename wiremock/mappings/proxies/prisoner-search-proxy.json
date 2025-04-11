@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/prison-search-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://prisoner-search-dev.prison.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/prisoner-search-proxy"
+  }
+}

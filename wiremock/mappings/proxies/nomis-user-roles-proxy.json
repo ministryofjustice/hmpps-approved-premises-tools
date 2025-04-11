@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/nomis-user-roles-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://nomis-user-roles-api-dev.prison.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/nomis-user-roles-proxy"
+  }
+}
