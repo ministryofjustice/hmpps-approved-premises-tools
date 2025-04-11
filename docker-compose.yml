@@ -42,6 +42,7 @@ services:
   database:
     # we align with the version of postgres used in AWS
     image: "postgis/postgis:14-3.5"
+    platform: linux/amd64
     container_name: approved-premises-postgres-dev
     environment:
       - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
