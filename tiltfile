@@ -25,7 +25,7 @@ if local_api:
         # Note! These checks only wait for containers to start, ideally we'd wait for them to be ready
         # see https://docs.tilt.dev/resource_dependencies.html
         # "For dc_resource: the container is started (NB: Tilt doesn’t currently observe docker-compose health checks)"
-        resource_deps=["postgres", "redis"],
+        resource_deps=["postgres", "redis", "localstack", "wiremock"],
         serve_dir=os.getenv("LOCAL_CAS_API_PATH"),
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=8080, path="/health")
@@ -35,11 +35,6 @@ if local_api:
         }
     )
     resources.append("local_api")
-else:
-    dc_resource(
-        "api",
-        resource_deps=[]
-    )
 
 if local_ui:
     resources.remove("frontend")
@@ -52,7 +47,7 @@ if local_ui:
         serve_cmd=npm_command,
         serve_dir=os.getenv("LOCAL_CAS_UI_PATH"),
         dir=os.getenv("LOCAL_CAS_UI_PATH"),
-        resource_deps=[],
+        resource_deps=["redis"],
         readiness_probe=probe(
             period_secs=15, http_get=http_get_action(port=3000, path="/health")
         )
