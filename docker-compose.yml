@@ -6,6 +6,8 @@ services:
     depends_on:
       - postgres
       - redis
+      - wiremock
+      - localstack
     # using raw format disables interpolation, which causes errors when values include '$'
     # note that intellij doesn't think this is valid but is i
     # https://youtrack.jetbrains.com/issue/IJPL-68738/Docker-Compose.-Editor.-Path-property-of-envfile-attribute-is-not-recognized
@@ -36,6 +38,7 @@ services:
     pull_policy: always
     depends_on:
       - redis
+      - api
     env_file:
       - path: .env.ui
         format: raw
