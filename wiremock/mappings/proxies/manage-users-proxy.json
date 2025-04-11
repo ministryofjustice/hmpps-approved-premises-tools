@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/manage-users-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://manage-users-api-dev.hmpps.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/manage-users-proxy"
+  }
+}

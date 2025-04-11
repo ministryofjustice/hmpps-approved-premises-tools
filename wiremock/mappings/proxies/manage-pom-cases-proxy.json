@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/manage-pom-cases-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://dev.moic.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/manage-pom-cases-proxy"
+  }
+}
