@@ -20,6 +20,7 @@ override_ui_props_with_local_ui_props() {
   cp "$target_env" "$merged_env"
   for key in $priority_keys; do
       # Remove lines with matching key (supports optional whitespace)
+      # shellcheck disable=SC1087
       sed -i '' "/^$key[[:space:]]*=/d" "$merged_env"
   done
 

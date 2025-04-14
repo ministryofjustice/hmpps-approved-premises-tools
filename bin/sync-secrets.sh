@@ -86,8 +86,8 @@ sync_to_github() {
   echo "Syncing github for ${secret_prefix}"
   echo ""
 
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+  gh secret set --repo ministryofjustice/hmpps-approved-premises-api "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
+  gh secret set --repo ministryofjustice/hmpps-approved-premises-api "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
 
   gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
   gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
