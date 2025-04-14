@@ -47,7 +47,7 @@ Once ap-tools has started and the [tilt console](http://localhost:10350) is all 
 
 ## Users Credentials
 
-The same credentials used to login to the dev instance of the CAS UIs should be used. These are managed in the [CAS 1Password Vault](https://dsdmoj.atlassian.net/wiki/spaces/AP/pages/5442470559/CAS+User+Authentication+Authorisation+and+Setup)
+The same credentials used to login to the dev instance of the CAS UIs should be used. For more information, see the [Dev & Test Users documentation](https://dsdmoj.atlassian.net/wiki/spaces/AP/pages/5624791477/Dev+Test+Users)
 
 A [sync-secrets.sh](bin/sync-secrets.sh) script is provided to sync secrets from the secrets mastered in k8s secrets to the CAS 1Password Vault and Github Secrets (for build pipelines)
 
