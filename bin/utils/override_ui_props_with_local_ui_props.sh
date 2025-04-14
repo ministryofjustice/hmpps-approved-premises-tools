@@ -35,4 +35,8 @@ override_ui_props_with_local_ui_props() {
   rm "$merged_env"
 
   echo "Merged .env file created at $target_env"
+
+  # remove comments from the resultant file
+  # -i '' is required for mac os, see https://stackoverflow.com/questions/26081375
+  sed -i '' '/^#/d' "$target_env"
 }
