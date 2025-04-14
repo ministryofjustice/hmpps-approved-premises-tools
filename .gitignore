@@ -7,3 +7,7 @@ databases/
 
 .env.api
 .env.ui
+
+.env.cas1-ui
+.env.cas2-ui
+.env.cas3-ui

@@ -2,15 +2,19 @@ docker_compose("./docker-compose.yml")
 
 config.define_bool("local-api")
 config.define_bool("local-ui")
+config.define_bool("cas1")
+config.define_bool("cas2")
+config.define_bool("cas3")
 
 cfg = config.parse()
 
 local_api = cfg.get("local-api", False)
 local_ui = cfg.get("local-ui", False)
+cas1 = cfg.get("cas1", False)
+cas2 = cfg.get("cas2", False)
+cas3 = cfg.get("cas3", False)
 
 resources = [
-    "api",
-    "frontend",
     "wiremock",
     "postgres",
     "redis",
@@ -18,9 +22,9 @@ resources = [
 ]
 
 if local_api:
-    resources.remove("api")
+    print("Running local API")
     local_resource(
-        "local_api",
+        "api-local",
         serve_cmd="./gradlew bootRunDebug --stacktrace",
         # Note! These checks only wait for containers to start, ideally we'd wait for them to be ready
         # see https://docs.tilt.dev/resource_dependencies.html
@@ -34,25 +38,71 @@ if local_api:
             "BOOT_RUN_ENV_FILE": os.getcwd() + '/.env.api'
         }
     )
-    resources.append("local_api")
+    resources.append("api-local")
+else:
+    print("Running docker API")
+    resources.append("api")
 
-if local_ui:
-    resources.remove("frontend")
+if cas1:
+    if local_ui:
+        npm_command='export $(cat ' + os.getcwd() + '/.env.cas1-ui) && npm run start:dev'
 
-    npm_command='export $(cat ' + os.getcwd() + '/.env.ui) && npm run start:dev'
-
-    local_resource(
-        "local_ui",
-        cmd="npm install",
-        serve_cmd=npm_command,
-        serve_dir=os.getenv("LOCAL_CAS_UI_PATH"),
-        dir=os.getenv("LOCAL_CAS_UI_PATH"),
-        resource_deps=["redis"],
-        readiness_probe=probe(
-            period_secs=15, http_get=http_get_action(port=3000, path="/health")
+        local_resource(
+            "cas1-ui-local",
+            cmd="npm install",
+            serve_cmd=npm_command,
+            serve_dir=os.getenv("LOCAL_CAS1_UI_PATH"),
+            dir=os.getenv("LOCAL_CAS1_UI_PATH"),
+            resource_deps=["redis"],
+            readiness_probe=probe(
+                period_secs=15, http_get=http_get_action(port=3000, path="/health")
+            )
         )
-    )
-    resources.append("local_ui")
+        resources.append("cas1-ui-local")
+    else:
+        resources.append("cas1-ui")
+
+if cas2:
+    if local_ui:
+        npm_command='export $(cat ' + os.getcwd() + '/.env.cas2-ui) && npm run start:dev'
+
+        local_resource(
+            "cas2-ui-local",
+            cmd="npm install",
+            serve_cmd=npm_command,
+            serve_dir=os.getenv("LOCAL_CAS2_UI_PATH"),
+            dir=os.getenv("LOCAL_CAS2_UI_PATH"),
+            resource_deps=["redis"],
+            readiness_probe=probe(
+                period_secs=15, http_get=http_get_action(port=3000, path="/health")
+            )
+        )
+        resources.append("cas2-ui-local")
+    else:
+        resources.append("cas2-ui")
+
+if cas3:
+    if local_ui:
+        npm_command='export $(cat ' + os.getcwd() + '/.env.cas3-ui) && npm run start:dev'
+
+        local_resource(
+            "cas3-ui-local",
+            cmd="npm install",
+            serve_cmd=npm_command,
+            serve_dir=os.getenv("LOCAL_CAS3_UI_PATH"),
+            dir=os.getenv("LOCAL_CAS3_UI_PATH"),
+            resource_deps=["redis"],
+            readiness_probe=probe(
+                period_secs=15, http_get=http_get_action(port=3000, path="/health")
+            )
+        )
+        resources.append("cas3-ui-local")
+    else:
+        resources.append("cas3-ui")
 
 config.clear_enabled_resources()
+
+print("Loading resources...")
+print(resources)
+
 config.set_enabled_resources(resources)
