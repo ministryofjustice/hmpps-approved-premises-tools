@@ -8,31 +8,39 @@ cd "$(dirname "$0")"
 script_dir="$(pwd)"
 
 . "$script_dir"/utils/resolve_secrets.sh
-. "$script_dir"/utils/override_ui_props_with_local_ui_props.sh
 
 local_ui=0
 local_api=0
+cas1=0
+cas2=0
+cas3=0
 
 while [ "$1" != "" ];
 do
    case $1 in
     --local-ui)
-        if [ -z "${LOCAL_CAS_UI_PATH}" ]; then
-          echo "Path to local UI not found, please ensure you have set the LOCAL_CAS_UI_PATH environment variable and try again"
-          exit 1
-        fi
-        local_ui=1
-        ;;
+      local_ui=1
+      ;;
     --local-api)
-        if [ -z "${LOCAL_CAS_API_PATH}" ]; then
-          echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
-          exit 1
-        fi
-        local_api=1
-        ;;
+      local_api=1
+      ;;
+    --cas1)
+      cas1=1
+      ;;
+    --cas2)
+      cas2=1
+      ;;
+    --cas3)
+      cas3=1
+      ;;
   esac
   shift
 done
+
+if [[ ($cas1 -eq 0 ) && ($cas2 -eq 0 ) && ($cas3 -eq 0 ) ]]; then
+  echo "Must specify either --cas1, --cas2 or --cas3 on the command line"
+  exit 1
+fi
 
 echo "Starting the Approved Premises Stack. This might take a moment. Logs available at http://localhost:10350"
 
@@ -42,19 +50,62 @@ resolve_secrets "$script_dir/../.env.api.template" \
                 "hmpps-community-accommodation-dev" \
                 "${api_secret_names[@]}"
 
-ui_secret_names=("hmpps-approved-premises-ui")
-resolve_secrets "$script_dir/../.env.ui.template" \
-                "$script_dir/../.env.ui" \
+cas1_ui_secret_names=("hmpps-approved-premises-ui")
+resolve_secrets "$script_dir/../.env.cas1-ui.template" \
+                "$script_dir/../.env.cas1-ui" \
                 "hmpps-community-accommodation-dev" \
-                "${ui_secret_names[@]}"
+                "${cas1_ui_secret_names[@]}"
+
+cas2_ui_secret_names=("hmpps-community-accommodation-tier-2-ui")
+resolve_secrets "$script_dir/../.env.cas2-ui.template" \
+                "$script_dir/../.env.cas2-ui" \
+                "hmpps-community-accommodation-dev" \
+                "${cas2_ui_secret_names[@]}"
+
+cas3_ui_secret_names=("hmpps-temporary-accommodation-ui")
+resolve_secrets "$script_dir/../.env.cas3-ui.template" \
+                "$script_dir/../.env.cas3-ui" \
+                "hmpps-community-accommodation-dev" \
+                "${cas3_ui_secret_names[@]}"
 
 tiltArgs=""
+if [ $cas1 -gt 0 ]; then
+  tiltArgs="$tiltArgs --cas1"
+fi
+
+if [ $cas2 -gt 0 ]; then
+  tiltArgs="$tiltArgs --cas2"
+fi
+
+if [ $cas3 -gt 0 ]; then
+  tiltArgs="$tiltArgs --cas3"
+fi
+
 if [ $local_api -gt 0 ]; then
+  if [ -z "${LOCAL_CAS_API_PATH}" ]; then
+    echo "Path to local API not found, please ensure you have set the LOCAL_CAS_API_PATH environment variable and try again"
+    exit 1
+  fi
+
   tiltArgs="$tiltArgs --local-api"
 fi
 
 if [ $local_ui -gt 0 ]; then
-  override_ui_props_with_local_ui_props "$script_dir/../.env.ui"
+  if [ $cas1 -gt 0 ] && [ -z "${LOCAL_CAS1_UI_PATH}" ]; then
+    echo "Path to CAS1 local UI not found, please ensure you have set the LOCAL_CAS1_UI_PATH environment variable and try again"
+    exit 1
+  fi
+
+  if [ $cas2 -gt 0 ] && [ -z "${LOCAL_CAS2_UI_PATH}" ]; then
+    echo "Path to CAS2 local UI not found, please ensure you have set the LOCAL_CAS2_UI_PATH environment variable and try again"
+    exit 1
+  fi
+
+  if [ $cas3 -gt 0 ] && [ -z "${LOCAL_CAS3_UI_PATH}" ]; then
+    echo "Path to CAS3 local UI not found, please ensure you have set the LOCAL_CAS3_UI_PATH environment variable and try again"
+    exit 1
+  fi
+
   tiltArgs="$tiltArgs --local-ui"
 fi
 

@@ -13,8 +13,6 @@ set -o pipefail
 # $3 kubernetes namespace
 # $4 kubernetes secret names (array)
 resolve_secrets() {
-  echo "==> Resolve Secrets"
-
   source="$1"
   shift
   target="$1"
@@ -23,7 +21,7 @@ resolve_secrets() {
   shift
   secretNames=("$@")
 
-  echo "Rendering template '$source' to '$target' in namespace '$k8s_namespace'"
+  echo "==> Resolving secrets in template '$source' to '$target' in namespace '$k8s_namespace'"
 
   # shellcheck disable=SC3020
   if ! command -v jq &> /dev/null
@@ -42,7 +40,7 @@ resolve_secrets() {
       # get value in format 'key=value' which can then be used with the 'export' command, setting them as env vars
       for secret in $(echo "$secrets" | jq -r "to_entries | map(\"\(.key)=\(.value|tostring)\") | .[]" ); do
         # shellcheck disable=SC2163
-        export "$secret"
+        export "$secret" || echo "Cannot export secret (see logged error above)"
       done
 
     done

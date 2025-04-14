@@ -25,13 +25,15 @@ For setup instructions, [click here](SETUP.md)
 
 ## Commands
 
-```ap-tools server start```
+```ap-tools server start --cas1```
+```ap-tools server start --cas2```
+```ap-tools server start --cas3```
 
-Start CAS1 UI and API  using the latest docker images. Check progress in the [tilt console](http://localhost:10350)
+The above will start the selected CAS UI and common API using the latest docker images. Check progress in the [tilt console](http://localhost:10350)
 
-```ap-tools server start --local-ui --local-api```
+```ap-tools server start --cas1 --local-ui --local-api```
 
-Start local versions of the configured CAS UI and API (see [SETUP.md](SETUP.md) for configuration). Check progress in the [tilt console](http://localhost:10350
+Start local version of the configured CAS1 UI and API. Check progress in the [tilt console](http://localhost:10350
 
 ```ap-tools server stop```
 
@@ -40,6 +42,13 @@ Stop the tools
 ```ap-tools server stop --clear-databases```
 
 Stop the tools and clear the API database
+
+Commands can be ran sequentially. E.g. to restart ap-tools and clean the database, could use
+
+```
+ap-tools server stop --clear-databases
+ap-tools server start --cas1 --local-ui --local-api
+```
 
 ## Accessing the User Interface
 
@@ -57,4 +66,5 @@ All requests to upstream services are proxied by wiremock. Mocks can be configur
 
 ## Known Limitations
 
-* The tool only supports running CAS1 UI via docker (although changing the docker image name in docker-compose.yml should work)
+* We can't run all CAS UIs concurrently because auth only supports requests from localhost:3000 (i.e. we can't run each UI in different ports)
+* We could solve this by installing a reverse proxy (such as traefik), but we'd need to configure that to optionally forward traffic to instances running in node, not docker
