@@ -8,6 +8,7 @@ cd "$(dirname "$0")"
 script_dir="$(pwd)"
 
 . "$script_dir"/utils/resolve_secrets.sh
+. "$script_dir"/utils/override_ui_props_with_local_ui_props.sh
 
 local_ui=0
 local_api=0
@@ -91,19 +92,31 @@ if [ $local_api -gt 0 ]; then
 fi
 
 if [ $local_ui -gt 0 ]; then
-  if [ $cas1 -gt 0 ] && [ -z "${LOCAL_CAS1_UI_PATH}" ]; then
-    echo "Path to CAS1 local UI not found, please ensure you have set the LOCAL_CAS1_UI_PATH environment variable and try again"
-    exit 1
+  if [ $cas1 -gt 0 ]; then
+    if [ -z "${LOCAL_CAS1_UI_PATH}" ]; then
+      echo "Path to CAS1 local UI not found, please ensure you have set the LOCAL_CAS1_UI_PATH environment variable and try again"
+      exit 1
+    fi
+
+    override_ui_props_with_local_ui_props "$script_dir/../.env.cas1-ui" "${LOCAL_CAS1_UI_PATH}/.env"
   fi
 
-  if [ $cas2 -gt 0 ] && [ -z "${LOCAL_CAS2_UI_PATH}" ]; then
-    echo "Path to CAS2 local UI not found, please ensure you have set the LOCAL_CAS2_UI_PATH environment variable and try again"
-    exit 1
+  if [ $cas2 -gt 0 ]; then
+    if [ -z "${LOCAL_CAS2_UI_PATH}" ]; then
+      echo "Path to CAS2 local UI not found, please ensure you have set the LOCAL_CAS2_UI_PATH environment variable and try again"
+      exit 1
+    fi
+
+    override_ui_props_with_local_ui_props "$script_dir/../.env.cas2-ui" "${LOCAL_CAS2_UI_PATH}/.env"
   fi
 
-  if [ $cas3 -gt 0 ] && [ -z "${LOCAL_CAS3_UI_PATH}" ]; then
-    echo "Path to CAS3 local UI not found, please ensure you have set the LOCAL_CAS3_UI_PATH environment variable and try again"
-    exit 1
+  if [ $cas3 -gt 0 ]; then
+    if [ -z "${LOCAL_CAS3_UI_PATH}" ]; then
+      echo "Path to CAS3 local UI not found, please ensure you have set the LOCAL_CAS3_UI_PATH environment variable and try again"
+      exit 1
+    fi
+
+    override_ui_props_with_local_ui_props "$script_dir/../.env.cas3-ui" "${LOCAL_CAS3_UI_PATH}/.env"
   fi
 
   tiltArgs="$tiltArgs --local-ui"
