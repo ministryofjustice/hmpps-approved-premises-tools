@@ -21,6 +21,7 @@ resolve_secrets() {
   shift
   secretNames=("$@")
 
+  echo ""
   echo "==> Resolving secrets in template '$source' to '$target' in namespace '$k8s_namespace'"
 
   # shellcheck disable=SC3020
