@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/case-notes-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://dev.offender-case-notes.service.justice.gov.uk",
+    "proxyUrlPrefixToRemove": "/case-notes-proxy"
+  }
+}

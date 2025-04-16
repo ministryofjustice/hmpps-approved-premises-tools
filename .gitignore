@@ -1,6 +1,5 @@
 /nomis-db
 /Brewfile.lock.json
-/hmpps-probation-integration-services
 package-lock.json
 .idea
 .DS_STORE
@@ -8,3 +7,7 @@ databases/
 
 .env.api
 .env.ui
+
+.env.cas1-ui
+.env.cas2-ui
+.env.cas3-ui

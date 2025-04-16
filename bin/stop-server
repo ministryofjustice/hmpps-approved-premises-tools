@@ -1,7 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -e
+# shellcheck disable=SC3040
+set -o pipefail
 
 do_clear_databases=0
-script_dir=$(dirname "$0")
+cd "$(dirname "$0")"
+script_dir="$(pwd)"
+
+touch "$script_dir/../.env.api"
+touch "$script_dir/../.env.cas1-ui"
+touch "$script_dir/../.env.cas2-ui"
+touch "$script_dir/../.env.cas3-ui"
 
 while [ "$1" != "" ];
 do
@@ -16,10 +26,16 @@ done
 echo "==> Stopping tilt..."
 
 tilt down -f "$script_dir/../tiltfile"
-killall tilt
+
+# This must run cleanly (not forced) to kill any local resources
+# started by the original tilt command
+killall tilt || true
 
 if [ $do_clear_databases -gt 0 ]; then
   sleep 5
-  
-  "$script_dir/utils/clear-databases.sh"
+
+  echo "Removing API database volume"
+  rootpath="$script_dir/../"
+  # detach volumes, including the composed managed API database volume
+  docker compose -f "$rootpath/docker-compose.yml" down -v
 fi

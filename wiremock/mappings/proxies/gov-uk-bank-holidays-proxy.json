@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/gov-uk-bank-holidays-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://www.gov.uk",
+    "proxyUrlPrefixToRemove": "/gov-uk-bank-holidays-proxy"
+  }
+}

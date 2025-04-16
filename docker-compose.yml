@@ -1,249 +1,145 @@
 services:
+
   api:
     image: quay.io/hmpps/hmpps-approved-premises-api:latest
-    container_name: approved-premises-api-dev
+    container_name: ap-tools-api
     pull_policy: always
     depends_on:
-      - database
+      - postgres
       - redis
-      - hmpps-auth
+      - wiremock
+      - localstack
+    # using raw format disables interpolation, which causes errors when values include '$'
+    # note that intellij doesn't think this is valid but is i
+    # https://youtrack.jetbrains.com/issue/IJPL-68738/Docker-Compose.-Editor.-Path-property-of-envfile-attribute-is-not-recognized
     env_file:
-      - .env.api
+      - path: .env.api
+        format: raw
     ports:
       - "8080:8080"
     environment:
       - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ap-tools-postgres/approved_premises_localdev
+      - SPRING_DATA_REDIS_HOST=ap-tools-redis
+      - SEED_FILE-PREFIX=/tmp/seed
+      - HMPPS_SQS_PROVIDER=localstack
+      - HMPPS_SQS_LOCALSTACKURL=http://ap-tools-localstack:4566
+      - SERVICES_HMPPS-TIER_BASE-URL=http://ap-tools-wiremock:8080/hmpps-tier-proxy
+      - SERVICES_PRISONS-API_BASE-URL=http://ap-tools-wiremock:8080/prisons-api-proxy
+      - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://ap-tools-wiremock:8080/probation-offender-search-proxy
+      - SERVICES_CASE-NOTES_BASE-URL=http://ap-tools-wiremock:8080/case-notes-proxy
+      - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-oasys-proxy
+      - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-delius-proxy
+      - SERVICES_GOV-UK-BANK-HOLIDAYS-API_BASE-URL=http://ap-tools-wiremock:8080/gov-uk-bank-holidays-proxy
+      - SERVICES_PRISONER-ALERTS-API_BASE-URL=http://ap-tools-wiremock:8080/prisoner-alerts-proxy
 
-  frontend:
+  # Only one of the following frontends is used, this is controlled by tilt via the tiltfile
+
+  cas1-ui:
     image: quay.io/hmpps/hmpps-approved-premises-ui:latest
-    container_name: approved-premises-ui-dev
+    container_name: ap-tools-cas1-ui
     pull_policy: always
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - REDIS_HOST=approved-premises-redis-dev
-      - REDIS_PORT=6379
-      - REDIS_TLS_ENABLED=false
-      - REDIS_AUTH_TOKEN=
-      - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9091/auth
-      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
-      - API_CLIENT_ID=approved-premises-ui
-      - API_CLIENT_SECRET=clientsecret
-      - SYSTEM_CLIENT_ID=approved-premises-ui
-      - SYSTEM_CLIENT_SECRET=clientsecret
-      - SESSION_SECRET=app-insecure-default-session
-      - NODE_ENV=development
-      - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/verification
-      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
-      - INGRESS_URL=http://localhost:3000
+    depends_on:
+      - redis
+    env_file:
+      - path: .env.cas1-ui
+        format: raw
     ports:
       - "3000:3000"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      - REDIS_HOST=ap-tools-redis
+      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
+      - INGRESS_URL=http://localhost:3000
     entrypoint: "node dist/server.js | bunyan"
 
-  database:
+  cas2-ui:
+    image: quay.io/hmpps/hmpps-community-accommodation-tier-2-ui:latest
+    container_name: ap-tools-cas2-ui
+    pull_policy: always
+    depends_on:
+      - redis
+    env_file:
+      - path: .env.cas2-ui
+        format: raw
+    ports:
+      - "3000:3000"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      - REDIS_HOST=ap-tools-redis
+      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
+      - INGRESS_URL=http://localhost:3000
+    entrypoint: "node dist/server.js | bunyan"
+
+  cas3-ui:
+    image: quay.io/hmpps/hmpps-temporary-accommodation-ui:latest
+    container_name: ap-tools-cas3-ui
+    pull_policy: always
+    depends_on:
+      - redis
+    env_file:
+      - path: .env.cas3-ui
+        format: raw
+    ports:
+      - "3000:3000"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      - REDIS_HOST=ap-tools-redis
+      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
+      - INGRESS_URL=http://localhost:3000
+    entrypoint: "node dist/server.js | bunyan"
+
+  postgres:
     # we align with the version of postgres used in AWS
     image: "postgis/postgis:14-3.5"
     platform: linux/amd64
-    container_name: approved-premises-postgres-dev
+    container_name: ap-tools-postgres
     environment:
       - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_USER=localdev
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
     volumes:
-      # We use a docker managed volume instead of a mapped volume (e.g. 'databases/api') before the
+      # We use a docker managed volume instead of a mapped volume because the
       # mapped volumes are very slow meaning from scratch postgres startup is taking a very long time
       # This coupled with the fact that when using --local-api tilt will only check if postgres is running (not ready)
       # before starting the API is leading to start up failures
-      - database-data-api:/var/lib/postgresql/data/
+      - ap-tool-postgres-data-api:/var/lib/postgresql/data/
     ports:
       - "5431:5432"
     healthcheck:
       test: pg_isready -U localdev -d approved_premises_localdev
 
-  hmpps-auth:
-    image: quay.io/hmpps/hmpps-auth:latest
-    container_name: hmpps-auth
-    pull_policy: always
-    depends_on:
-      - auth-db
-    ports:
-      - "9091:8080"
-      - "5001:5005"
-    volumes:
-      - ./seed/hmpps-auth:/seed
-    entrypoint: "java -Dcom.sun.management.jmxremote.local.only=false -Djava.security.egd=file:/dev/./urandom -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar /app/app.jar"
-    healthcheck:
-      test: ["CMD", "echo", "-n > '/dev/tcp/127.0.0.1/8080'"]
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - SPRING_PROFILES_ACTIVE=dev,nomis,delius,local-postgres
-      - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
-      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
-      - SPRING_H2_CONSOLE_SETTINGS_WEBALLOWOTHERS=true
-      - DELIUS_ENABLED=true
-      - DELIUS_ENDPOINT_URL=http://wiremock:8080
-      - DELIUS_ENDPOINT_TIMEOUT=1s
-      - DELIUS_CLIENT_CLIENT-ID=delius-auth-api-client
-      - DELIUS_CLIENT_CLIENT-SECRET=delius-auth-api-client
-      - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
-      - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/dev/data/auth_{vendor},db/dev/data/auth,filesystem:/seed
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth-db
-      - MANAGE-USERS-API_ENABLED=${MANAGE_USERS_API_ENABLED:-false}
-      - MANAGE_USERS_API_ENDPOINT_URL=http://wiremock:8080
-
   wiremock:
     image: wiremock/wiremock
-    container_name: wiremock
+    container_name: ap-tools-wiremock
     ports:
       - "9004:8080"
     volumes:
       - ./wiremock:/home/wiremock
-    command: "--global-response-templating"
-
-  prison-api:
-    image: quay.io/hmpps/prison-api:latest
-    container_name: prison-api
-    pull_policy: always
-    ports:
-      - "9570:8080"
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - SERVER_PORT=8080
-      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
-      - SPRING_DATASOURCE_URL=jdbc:hsqldb:file:/nomis-db/nomisdb;sql.syntax_ora=true;get_column_name=false;shutdown=false;sql.nulls_first=false;sql.nulls_order=false;hsqldb.lock_file=false
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_REPLICA_DATASOURCE_URL=jdbc:hsqldb:file:/nomis-db/nomisdb;sql.syntax_ora=true;get_column_name=false;shutdown=false;sql.nulls_first=false;sql.nulls_order=false;hsqldb.lock_file=false
-      - SPRING_REPLICA_DATASOURCE_USERNAME=sa
-      - SPRING_REPLICA_DATASOURCE_PASSWORD=password
-      - LOGGING_LEVEL_UK_GOV_JUSTICE=debug
-      - SPRING_FLYWAY_LOCATIONS=classpath:/db/migration/nomis/ddl,classpath:/db/migration/data,classpath:/db/migration/nomis/data,classpath:/db/migration/nomis/data-hsqldb,filesystem:/seed
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
-    volumes:
-      - ./databases/prison-api:/nomis-db
-      - ./seed/prison-api:/seed
-
-  nomis-user-roles-api:
-    image: quay.io/hmpps/nomis-user-roles-api:latest
-    container_name: nomis-user-roles-api
-    pull_policy: always
-    depends_on:
-      - hmpps-auth
-    ports:
-      - "9575:8080"
-    volumes:
-      - ./seed/nomis-user-roles:/seed
+    command: "--global-response-templating --verbose"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - SERVER_PORT=8080
-      - SPRING_PROFILES_ACTIVE=dev
-      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
-      - SPRING_FLYWAY_LOCATIONS=classpath:db/migration,classpath:db/dev,filesystem:/seed
-
-  hmpps-manage-users-api:
-    image: quay.io/hmpps/hmpps-manage-users-api:latest
-    container_name: hmpps-manage-users-api
-    pull_policy: always
-    depends_on:
-      - hmpps-auth
-    ports:
-      - "9560:8096"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8096/health/ping" ]
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - SERVER_PORT=8096
-      - HMPPS_AUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
-      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
-      - SPRING_PROFILES_ACTIVE=dev
-      - EXTERNAL_USERS_ENDPOINT_URL=http://hmpps-external-users-api:8098
-      - NOMIS_ENDPOINT_URL=http://nomis-user-roles-api:8080
-      - AUTHORIZATION_SERVER_TOKEN_ENDPOINT_URL=http://hmpps-auth:8080/auth/oauth/token
-
-  hmpps-external-users-api:
-    image: quay.io/hmpps/hmpps-external-users-api:latest
-    container_name: hmpps-external-users-api
-    pull_policy: always
-    volumes:
-      - ./seed/hmpps-external-users-api:/seed
-    depends_on:
-      - auth-db-external-users
-      - hmpps-auth
-    ports:
-      - "9565:8098"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8098/health/ping"]
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - SERVER_PORT=8098
-      - SPRING_PROFILES_ACTIVE=dev,local-postgres
-      - SPRING_R2DBC_URL=r2dbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
-      - SPRING_FLYWAY_URL=jdbc:postgresql://auth-db-external-users:5432/auth-db?sslmode=prefer
-      - API_BASE_URL_OAUTH=http://hmpps-auth:8080/auth
-      - HMPPS_SQS_PROVIDER=localstack
-      - SPRING_FLYWAY_LOCATIONS=classpath:db/migration/auth,db/migration/dev/data/auth_{vendor},db/migration/dev/data/auth,filesystem:/seed
-      - HMPPS_SQS_LOCALSTACKURL=http://approved-premises-api-localstack:4566
-
-  auth-db:
-    image: postgres:15
-    container_name: auth-db
-    restart: always
-    ports:
-      - "5434:5432"
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - POSTGRES_PASSWORD=admin_password
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=auth-db
-    healthcheck:
-      test: pg_isready -d auth-db
-
-  # we should be able to share auth-db with hmpps-external-users-api
-  # (see https://github.com/ministryofjustice/hmpps-external-users-api/blob/main/README.md)
-  # but currently the flyway scripts are out of sync
-  auth-db-external-users:
-    image: postgres:15
-    container_name: auth-db-external-users
-    restart: always
-    ports:
-      - "5534:5432"
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - POSTGRES_PASSWORD=admin_password
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=auth-db
-    healthcheck:
-      test: pg_isready -d auth-db
+      # we use a custom healthcheck because calling /health
+      # in wiremock outputs in verbose request/response logs, and
+      # we're not interested in seeing this request
+      test: bash -c "exec 6<> /dev/tcp/localhost/8080"
 
   redis:
     image: "bitnami/redis:7.2.5"
-    container_name: approved-premises-redis-dev
+    container_name: ap-tools-redis
     environment:
       - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
 
-  redis-commander:
-    container_name: redis-commander
-    hostname: redis-commander
-    image: ghcr.io/joeferner/redis-commander:latest
-    restart: always
-    environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - REDIS_HOSTS=frontend:approved-premises-redis-dev:6379:0,api-cache:approved-premises-redis-dev:6379:5
-    ports:
-      - "7341:8081"
-
   localstack:
     image: localstack/localstack:3.4.0
-    container_name: approved-premises-api-localstack
+    container_name: ap-tools-localstack
     ports:
       - "4566:4566"
       - "4571:4571"
-      - 8999:8080
+      - "8999:8080"
     environment:
       - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVICES=sns,sqs
@@ -255,4 +151,4 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
-  database-data-api:
+  ap-tool-postgres-data-api:
