@@ -11,3 +11,4 @@ databases/
 .env.cas1-ui
 .env.cas2-ui
 .env.cas3-ui
+.env.cas2v2-ui
