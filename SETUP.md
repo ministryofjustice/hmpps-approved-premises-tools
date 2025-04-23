@@ -18,7 +18,7 @@ git clone https://github.com/ministryofjustice/hmpps-approved-premises-tools.git
 ## Install dependencies
 
 ```bash
-/bin/install-dependencies.sh
+./bin/install-dependencies.sh
 ```
 
 ## Add PATH entries
