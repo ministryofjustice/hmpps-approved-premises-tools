@@ -7,12 +7,56 @@ if [ "$command" = "server" ]; then
 elif [ "$command" = "--help" ]; then
   echo "Usage: ap-tools <command>"
   echo "Commands:"
+  echo "  start"
+  echo "  stop"
   echo "  server start"
   echo "  server stop"
   echo "Options:"
   echo "  --local-ui"
   echo "  --local-api"
-  
+elif [ "$command" = "start" ]; then
+  while true; do
+    read -p "Start which CAS? (1/2/3): " casx
+    case $casx in
+      [1]* ) command="$command --cas1"; break;;
+      [2]* ) command="$command --cas2"; break;;
+      [3]* ) command="$command --cas3"; break;;
+      * ) echo "Please answer 1, 2, or 3.";;
+    esac
+  done
+  while true; do
+    read -p "Start local UI? (y/n): " ui
+    case $ui in
+        [Yy]) command="$command --local-ui"; break;;
+        [Nn]) break;;
+        * ) echo "Please answer (y/n).";;
+    esac
+  done
+
+  while true; do
+    read -p "Start local API? (y/n): " api
+    case $api in
+        [Yy] ) command="$command --local-api"; break;;
+        [Nn] ) break;;
+        * ) echo "Please answer yes or no (y/n).";;
+    esac
+  done
+
+  echo "starting ap-tools with: $command"
+   "$(dirname "$0")/server" $command
+
+elif [ "$command" = "stop" ]; then
+  while true; do
+    read -p "Clear databases? (y/n): " db
+    case $db in
+        [Yy] ) command="$command --clear-databases"; break;;
+        [Nn] ) break;;
+        * ) echo "Please answer yes or no (y/n).";;
+    esac
+  done
+  echo "stopping ap-tools with: $command"
+  "$(dirname "$0")/server" $command
+
 else
   echo "Unknown command $1"
   exit 1

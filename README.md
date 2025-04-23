@@ -25,27 +25,46 @@ For setup instructions, [click here](SETUP.md)
 
 ## Commands
 
-```ap-tools server start --cas1```
-```ap-tools server start --cas2```
-```ap-tools server start --cas3```
+```bash
+ap-tools server start --cas1
+```
+
+```bash
+ap-tools server start --cas2
+```
+
+```bash
+ap-tools server start --cas3
+```
 
 The above will start the selected CAS UI and common API using the latest docker images. Check progress in the [tilt console](http://localhost:10350)
 
-```ap-tools server start --cas1 --local-ui --local-api```
+```bash
+ap-tools server start --cas1 --local-ui --local-api
+```
+
+Cas3 & Local Api only:
+```bash
+ap-tools server start --cas3 --local-api
+```
 
 Start local version of the configured CAS1 UI and API. Check progress in the [tilt console](http://localhost:10350
 
-```ap-tools server stop```
+```bash
+ap-tools server stop
+```
 
 Stop the tools
 
-```ap-tools server stop --clear-databases```
+```bash
+ap-tools server stop --clear-databases
+```
 
 Stop the tools and clear the API database
 
 Commands can be ran sequentially. E.g. to restart ap-tools and clean the database, could use
 
-```
+```bash
 ap-tools server stop --clear-databases
 ap-tools server start --cas1 --local-ui --local-api
 ```
