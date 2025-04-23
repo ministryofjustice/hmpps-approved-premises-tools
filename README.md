@@ -26,7 +26,7 @@ For setup instructions, [click here](SETUP.md)
 ## Commands
 
 A script that give you options for which CAS to start, and whether to run them locally, or use the latest docker container.
-Check progress in the [tilt console](http://localhost:10350
+Check progress in the [tilt console](http://localhost:10350)
 ```bash
 ap-tools start
 ```
