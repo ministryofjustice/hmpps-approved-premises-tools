@@ -47,7 +47,7 @@ ap-tools stop
 ```
 
 Alternatively, you can type the full commands, 
-```ap-tools server (start/stop) (--cas1 --local-ui --local-api / --clear-databases)```
+```ap-tools server (start/stop) (--cas1|cas2|cas2v2|cas3 --local-ui --local-api / --clear-databases)```
 
 ## Accessing the User Interface
 
