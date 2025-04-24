@@ -71,6 +71,24 @@ services:
       - INGRESS_URL=http://localhost:3000
     entrypoint: "node dist/server.js | bunyan"
 
+  cas2v2-ui:
+    image: ghcr.io/ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui:latest
+    container_name: ap-tools-cas2v2-ui
+    pull_policy: always
+    depends_on:
+      - redis
+    env_file:
+      - path: .env.cas2v2-ui
+        format: raw
+    ports:
+      - "3000:3000"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      - REDIS_HOST=ap-tools-redis
+      - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
+      - INGRESS_URL=http://localhost:3000
+    entrypoint: "node dist/server.js | bunyan"
+
   cas3-ui:
     image: quay.io/hmpps/hmpps-temporary-accommodation-ui:latest
     container_name: ap-tools-cas3-ui

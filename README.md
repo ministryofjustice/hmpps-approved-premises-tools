@@ -30,6 +30,16 @@ Check progress in the [tilt console](http://localhost:10350)
 ```bash
 ap-tools start
 ```
+```ap-tools server start --cas1```
+```ap-tools server start --cas2```
+```ap-tools server start --cas2v2```
+```ap-tools server start --cas3```
+
+The above will start the selected CAS UI and common API using the latest docker images. Check progress in the [tilt console](http://localhost:10350)
+
+```ap-tools server start --cas1 --local-ui --local-api```
+
+Start local version of the configured CAS1 UI and API. Check progress in the [tilt console](http://localhost:10350
 
 A script to stop the ap-tools stack, which gives you the option to clear the databases.
 ```bash
@@ -37,7 +47,7 @@ ap-tools stop
 ```
 
 Alternatively, you can type the full commands, 
-```ap-tools server (start/stop) (--cas1 --local-ui --local-api / --clear-databases)```
+```ap-tools server (start/stop) (--cas1|cas2|cas2v2|cas3 --local-ui --local-api / --clear-databases)```
 
 ## Accessing the User Interface
 

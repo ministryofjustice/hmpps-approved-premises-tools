@@ -31,6 +31,7 @@ Clone the required project(s) e.g.
 * https://github.com/ministryofjustice/hmpps-approved-premises-ui
 * https://github.com/ministryofjustice/hmpps-temporary-accommodation-ui
 * https://github.com/ministryofjustice/hmpps-community-accommodation-tier-2-ui
+* https://github.com/ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui.git
 
 Then add the following environment variables, along with ap-tools binary path so you can run ap tools from any directory.
 
@@ -39,6 +40,7 @@ export PATH="$PATH:/<path-to-approved-premises-tools>/bin"
 export LOCAL_CAS_API_PATH=/Users/your-directories/hmpps-approved-premises-api
 export LOCAL_CAS1_UI_PATH=/Users/your-directories/hmpps-approved-premises-ui
 export LOCAL_CAS2_UI_PATH=/Users/your-directories/hmpps-community-accommodation-tier-2-ui
+export LOCAL_CAS2V2_UI_PATH=/Users/your-directories/hmpps-community-accommodation-tier-2-bail-ui
 export LOCAL_CAS3_UI_PATH=/Users/your-directories/hmpps-temporary-accommodation-ui
 ```
 

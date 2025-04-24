@@ -16,12 +16,18 @@ elif [ "$command" = "--help" ]; then
   echo "  --local-api"
 elif [ "$command" = "start" ]; then
   while true; do
-    read -p "Start which CAS? (1/2/3): " casx
+    echo "Choose the service to start."
+    echo "1) cas1"
+    echo "2) cas2"
+    echo "3) cas3"
+    echo "b) cas2v2 (bail)"
+    read -p "Start which CAS? (1/2/3/b): " casx
     case $casx in
       [1]* ) command="$command --cas1"; break;;
       [2]* ) command="$command --cas2"; break;;
+      [b]* ) command="$command --cas2v2"; break;;
       [3]* ) command="$command --cas3"; break;;
-      * ) echo "Please answer 1, 2, or 3.";;
+      * ) echo "Please answer 1, 2, 3, or b.";;
     esac
   done
   while true; do
