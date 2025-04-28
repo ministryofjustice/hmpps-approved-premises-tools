@@ -97,6 +97,9 @@ sync_to_github() {
 
   gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
   gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+
+  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
+  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
 }
 
 onepass_items_json=$(op item list --vault ${ONEPASS_VAULT} --categories Login --tags ${ONEPASS_TAG} --format json)
