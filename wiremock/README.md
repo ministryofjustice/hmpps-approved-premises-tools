@@ -6,7 +6,7 @@ We can selectively mock a request by adding a mapping to the `mappings/overrides
 
 Example overrides are checked in with a priority set greater than 100 so they're ignored by default
 
-## Viewing Requests
+## Viewing Requests & Responses
 
 Wiremock provides an API to view requests:
 
@@ -14,4 +14,6 @@ Wiremock provides an API to view requests:
 
 Combine with jq to make it more usable:
 
-```curl http://localhost:9004/__admin/requests | jq '.requests[].request.url```
+```curl http://localhost:9004/__admin/requests | jq '.requests[].request.url'```
+
+Note that newest requests are shown at the top of the list
