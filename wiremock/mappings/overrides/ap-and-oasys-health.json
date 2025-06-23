@@ -1,0 +1,20 @@
+{
+  "priority": 102,
+  "id": "d6e5ed90-65cf-4a14-b8b1-04f2b7b08133",
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/ap-and-oasys-proxy/health-details/(.*)"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": {
+      "health": {
+        "generalHealth": "true",
+        "generalHealthSpecify": "health answer"
+      }
+    }
+  }
+}
