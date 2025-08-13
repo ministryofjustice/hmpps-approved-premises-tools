@@ -25,7 +25,6 @@ services:
       - HMPPS_SQS_PROVIDER=localstack
       - HMPPS_SQS_LOCALSTACKURL=http://ap-tools-localstack:4566
       - SERVICES_HMPPS-TIER_BASE-URL=http://ap-tools-wiremock:8080/hmpps-tier-proxy
-      - SERVICES_PRISONS-API_BASE-URL=http://ap-tools-wiremock:8080/prisons-api-proxy
       - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://ap-tools-wiremock:8080/probation-offender-search-proxy
       - SERVICES_CASE-NOTES_BASE-URL=http://ap-tools-wiremock:8080/case-notes-proxy
       - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-oasys-proxy
