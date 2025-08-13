@@ -32,6 +32,7 @@ services:
       - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-delius-proxy
       - SERVICES_GOV-UK-BANK-HOLIDAYS-API_BASE-URL=http://ap-tools-wiremock:8080/gov-uk-bank-holidays-proxy
       - SERVICES_PRISONER-ALERTS-API_BASE-URL=http://ap-tools-wiremock:8080/prisoner-alerts-proxy
+      - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://ap-tools-wiremock:8080/manage-adjudications-proxy
 
   # Only one of the following frontends is used, this is controlled by tilt via the tiltfile
 
