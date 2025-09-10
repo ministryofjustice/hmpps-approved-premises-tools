@@ -1,7 +1,7 @@
 {
   "priority": 100,
   "request": {
-    "method": "GET",
+    "method": "ANY",
     "urlPattern": "/case-notes-proxy/.*"
   },
   "response": {
