@@ -51,7 +51,7 @@ if cas1:
 
         local_resource(
             "cas1-ui-local",
-            cmd="npm install",
+            cmd="npm ci",
             serve_cmd=npm_command,
             serve_dir=os.getenv("LOCAL_CAS1_UI_PATH"),
             dir=os.getenv("LOCAL_CAS1_UI_PATH"),
@@ -70,7 +70,7 @@ if cas2:
 
         local_resource(
             "cas2-ui-local",
-            cmd="npm install",
+            cmd="npm ci",
             serve_cmd=npm_command,
             serve_dir=os.getenv("LOCAL_CAS2_UI_PATH"),
             dir=os.getenv("LOCAL_CAS2_UI_PATH"),
@@ -89,7 +89,7 @@ if cas2v2:
 
         local_resource(
             "cas2v2-ui-local",
-            cmd="npm install",
+            cmd="npm ci",
             serve_cmd=npm_command,
             serve_dir=os.getenv("LOCAL_CAS2V2_UI_PATH"),
             dir=os.getenv("LOCAL_CAS2V2_UI_PATH"),
@@ -108,7 +108,7 @@ if cas3:
 
         local_resource(
             "cas3-ui-local",
-            cmd="npm install",
+            cmd="npm ci",
             serve_cmd=npm_command,
             serve_dir=os.getenv("LOCAL_CAS3_UI_PATH"),
             dir=os.getenv("LOCAL_CAS3_UI_PATH"),
