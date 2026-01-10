@@ -1,0 +1,31 @@
+{
+  "priority": 101,
+  "id": "5bea7fae-090b-4010-b0bc-bf4d9068b2bc",
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/ap-and-oasys-proxy/risk-to-the-individual/(.*)"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": {
+      "assessmentId": 1310103,
+      "assessmentType": "LAYER3",
+      "dateCompleted": null,
+      "assessorSignedDate": null,
+      "initiationDate": "2022-11-02T15:17:29Z",
+      "assessmentStatus": "OPEN",
+      "superStatus": "WIP",
+      "limitedAccessOffender": false,
+      "lastUpdatedDate": "2022-11-29T10:37:22Z",
+      "riskToTheIndividual": {
+        "analysisSuicideSelfharm": "[FA62] There have been numerous ACCTs opened since 2013 and every subsequent year he has been in custody.  In 2021...",
+        "analysisCoping": "[FA63] Has told prison staff that he swallowed batteries on one occasion due to wanting..",
+        "analysisVulnerabilities": "[FA64] A previous assessor opined that Mr Smith was displaying all the characteristics of someone...",
+        "riskOfSeriousHarm": "[R8.4.1] Mr Smith's previous risk of suicide does not indicate a risk of serious harm to others."
+      }
+    }
+  }
+}
