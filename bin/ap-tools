@@ -2,6 +2,43 @@
 
 command=$1 ; shift
 
+
+pull_changes_from_main() {
+
+# check if AP_TOOLS_DIR is set, pull changes if checked out branch is 'main'
+# Ensure required environment variable is set
+if [ -z "$AP_TOOLS_DIR" ]; then
+  echo "AP_TOOLS_DIR environment variable is not set, you will need to manually pull changes from the ap-tools repo."
+else
+  # Pull changes if current branch is main, and there's no local changes.
+
+  # Get the current branch
+  CURRENT_BRANCH=$(git -C "$AP_TOOLS_DIR" rev-parse --abbrev-ref HEAD)
+
+  echo $CURRENT_BRANCH
+
+  if [ "$CURRENT_BRANCH" = "main" ]; then
+    echo "AP-tools branch is 'main'. Attempting to pull latest changes..."
+
+    # Fetch updates from remote
+    if ! git -C "$AP_TOOLS_DIR" fetch; then
+      echo "Error: Failed to fetch from remote."
+      exit 1
+    fi
+
+    # Try a fast-forward merge only (will fail if conflicts exist)
+    if ! git -C "$AP_TOOLS_DIR" merge --ff-only origin/main; then
+      echo "Error: Pull failed. Local changes would conflict with remote. Aborting."
+      exit 1
+    fi
+
+    echo "Pull complete. 'main' is up to date."
+  else
+    echo "Current branch is '$CURRENT_BRANCH'. Skipping pull."
+  fi
+fi
+}
+
 if [ "$command" = "server" ]; then
   "$(dirname "$0")/server" "$@"
 elif [ "$command" = "--help" ]; then
@@ -15,6 +52,9 @@ elif [ "$command" = "--help" ]; then
   echo "  --local-ui"
   echo "  --local-api"
 elif [ "$command" = "start" ]; then
+
+  pull_changes_from_main
+
   while true; do
     echo "Choose the service to start."
     echo "1) cas1"
