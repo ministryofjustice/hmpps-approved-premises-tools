@@ -47,7 +47,7 @@ else:
 
 if cas1:
     if local_ui:
-        npm_command='export $(cat ' + os.getcwd() + '/.env.cas1-ui) && npm run start:dev'
+        npm_command='set -a && source ' + os.getcwd() + '/.env.cas1-ui && set +a && npm run start:dev'
 
         local_resource(
             "cas1-ui-local",
@@ -66,7 +66,7 @@ if cas1:
 
 if cas2:
     if local_ui:
-        npm_command='export $(cat ' + os.getcwd() + '/.env.cas2-ui) && npm run start:dev'
+        npm_command='set -a && source ' + os.getcwd() + '/.env.cas2-ui && set +a && npm run start:dev'
 
         local_resource(
             "cas2-ui-local",
@@ -85,7 +85,7 @@ if cas2:
 
 if cas2v2:
     if local_ui:
-        npm_command='export $(cat ' + os.getcwd() + '/.env.cas2v2-ui) && npm run start:dev'
+        npm_command='set -a && source ' + os.getcwd() + '/.env.cas2v2-ui && set +a && npm run start:dev'
 
         local_resource(
             "cas2v2-ui-local",
@@ -104,7 +104,7 @@ if cas2v2:
 
 if cas3:
     if local_ui:
-        npm_command='export $(cat ' + os.getcwd() + '/.env.cas3-ui) && npm run start:dev'
+        npm_command='set -a && source ' + os.getcwd() + '/.env.cas3-ui && set +a && npm run start:dev'
 
         local_resource(
             "cas3-ui-local",
