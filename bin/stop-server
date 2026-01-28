@@ -11,6 +11,7 @@ script_dir="$(pwd)"
 touch "$script_dir/../.env.api"
 touch "$script_dir/../.env.cas1-ui"
 touch "$script_dir/../.env.cas2-ui"
+touch "$script_dir/../.env.cas2v2-ui"
 touch "$script_dir/../.env.cas3-ui"
 
 while [ "$1" != "" ];
