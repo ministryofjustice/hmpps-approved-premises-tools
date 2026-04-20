@@ -1,0 +1,11 @@
+{
+  "priority": 100,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/manage-adjudications-proxy/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "https://manage-adjudications-api-dev.hmpps.service.justice.gov.uk/",
+    "proxyUrlPrefixToRemove": "/manage-adjudications-proxy"
+  }
+}

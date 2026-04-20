@@ -25,13 +25,13 @@ services:
       - HMPPS_SQS_PROVIDER=localstack
       - HMPPS_SQS_LOCALSTACKURL=http://ap-tools-localstack:4566
       - SERVICES_HMPPS-TIER_BASE-URL=http://ap-tools-wiremock:8080/hmpps-tier-proxy
-      - SERVICES_PRISONS-API_BASE-URL=http://ap-tools-wiremock:8080/prisons-api-proxy
       - SERVICES_PROBATION-OFFENDER-SEARCH-API_BASE-URL=http://ap-tools-wiremock:8080/probation-offender-search-proxy
       - SERVICES_CASE-NOTES_BASE-URL=http://ap-tools-wiremock:8080/case-notes-proxy
       - SERVICES_AP-OASYS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-oasys-proxy
       - SERVICES_AP-DELIUS-CONTEXT-API_BASE-URL=http://ap-tools-wiremock:8080/ap-and-delius-proxy
       - SERVICES_GOV-UK-BANK-HOLIDAYS-API_BASE-URL=http://ap-tools-wiremock:8080/gov-uk-bank-holidays-proxy
       - SERVICES_PRISONER-ALERTS-API_BASE-URL=http://ap-tools-wiremock:8080/prisoner-alerts-proxy
+      - SERVICES_MANAGE-ADJUDICATIONS-API_BASE-URL=http://ap-tools-wiremock:8080/manage-adjudications-proxy
 
   # Only one of the following frontends is used, this is controlled by tilt via the tiltfile
 
