@@ -41,6 +41,38 @@ K8S_SECRET=hmpps-cas-test-users
 ONEPASS_VAULT=CAS
 ONEPASS_TAG=cas_managed
 
+# shellcheck disable=SC2034
+readonly AP_REPOS=(
+  "hmpps-approved-premises-ui"
+  "hmpps-approved-premises-api"
+)
+
+# shellcheck disable=SC2034
+readonly CAS2_REPOS=(
+  "hmpps-community-accommodation-tier-2-ui"
+  "hmpps-community-accommodation-tier-2-bail-ui"
+  "hmpps-approved-premises-api"
+)
+
+# shellcheck disable=SC2034
+readonly CAS3_REPOS=(
+  "hmpps-temporary-accommodation-ui"
+  "hmpps-approved-premises-api"
+)
+
+# shellcheck disable=SC2034
+readonly SAS_REPOS=(
+  "hmpps-single-accommodation-service-ui"
+  "hmpps-single-accommodation-service-api"
+)
+
+declare -Ar prefix_to_repos=(
+  [AP]=AP_REPOS
+  [CAS2]=CAS2_REPOS
+  [CAS3]=CAS3_REPOS
+  [SAS]=SAS_REPOS
+)
+
 sync_to_one_pass() {
   onepass_items_json=$1
   secret_prefix=$2
@@ -79,27 +111,27 @@ sync_to_one_pass() {
 }
 
 sync_to_github() {
-  secret_prefix=$1
-  username=$2
-  password=$3
+  local secret_prefix=$1
+  local username=$2
+  local password=$3
+  local repo_prefix=${secret_prefix%%_*}
+  local repo_array_name=${prefix_to_repos[$repo_prefix]}
+  local repo
 
   echo "Syncing github for ${secret_prefix}"
   echo ""
 
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-api "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-api "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+  if [[ -z "$repo_array_name" ]]; then
+    echo "No github repositories configured for secret prefix '${secret_prefix}' (repo group '${repo_prefix}')" >&2
+    return 1
+  fi
 
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-approved-premises-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+  local -n repos="$repo_array_name"
 
-  gh secret set --repo ministryofjustice/hmpps-temporary-accommodation-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-temporary-accommodation-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
-
-  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
-
-  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
-  gh secret set --repo ministryofjustice/hmpps-community-accommodation-tier-2-bail-ui "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+  for repo in "${repos[@]}"; do
+    gh secret set --repo "ministryofjustice/${repo}" "E2E_USER_${secret_prefix}_USERNAME" --body "$username"
+    gh secret set --repo "ministryofjustice/${repo}" "E2E_USER_${secret_prefix}_PASSWORD" --body "$password"
+  done
 }
 
 onepass_items_json=$(op item list --vault ${ONEPASS_VAULT} --categories Login --tags ${ONEPASS_TAG} --format json)
