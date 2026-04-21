@@ -1,7 +1,7 @@
 services:
 
   api:
-    image: quay.io/hmpps/hmpps-approved-premises-api:latest
+    image: ghcr.io/ministryofjustice/hmpps-approved-premises-api:latest
     container_name: ap-tools-api
     pull_policy: always
     depends_on:
@@ -18,7 +18,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ap-tools-postgres/approved_premises_localdev
       - SPRING_DATA_REDIS_HOST=ap-tools-redis
       - SEED_FILE-PREFIX=/tmp/seed
@@ -36,7 +35,7 @@ services:
   # Only one of the following frontends is used, this is controlled by tilt via the tiltfile
 
   cas1-ui:
-    image: quay.io/hmpps/hmpps-approved-premises-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-approved-premises-ui:latest
     container_name: ap-tools-cas1-ui
     pull_policy: always
     depends_on:
@@ -47,14 +46,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
     entrypoint: "node dist/server.js | bunyan"
 
   cas2-ui:
-    image: quay.io/hmpps/hmpps-community-accommodation-tier-2-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-community-accommodation-tier-2-ui:latest
     container_name: ap-tools-cas2-ui
     pull_policy: always
     depends_on:
@@ -65,7 +63,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -83,14 +80,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
     entrypoint: "node dist/server.js | bunyan"
 
   cas3-ui:
-    image: quay.io/hmpps/hmpps-temporary-accommodation-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-temporary-accommodation-ui:latest
     container_name: ap-tools-cas3-ui
     pull_policy: always
     depends_on:
@@ -101,7 +97,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -113,7 +108,6 @@ services:
     platform: linux/amd64
     container_name: ap-tools-postgres
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_USER=localdev
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
@@ -146,7 +140,6 @@ services:
     image: "redis:latest"
     container_name: ap-tools-redis
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
@@ -159,7 +152,6 @@ services:
       - "4571:4571"
       - "8999:8080"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVICES=sns,sqs
       - DEBUG=${DEBUG- }
       - DOCKER_HOST=unix:///var/run/docker.sock
