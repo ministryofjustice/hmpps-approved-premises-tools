@@ -18,7 +18,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ap-tools-postgres/approved_premises_localdev
       - SPRING_DATA_REDIS_HOST=ap-tools-redis
       - SEED_FILE-PREFIX=/tmp/seed
@@ -47,7 +46,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -65,7 +63,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -83,7 +80,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -101,7 +97,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - REDIS_HOST=ap-tools-redis
       - APPROVED_PREMISES_API_URL=http://host.docker.internal:8080
       - INGRESS_URL=http://localhost:3000
@@ -113,7 +108,6 @@ services:
     platform: linux/amd64
     container_name: ap-tools-postgres
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - POSTGRES_USER=localdev
       - POSTGRES_PASSWORD=localdev_password
       - POSTGRES_DB=approved_premises_localdev
@@ -146,7 +140,6 @@ services:
     image: "redis:latest"
     container_name: ap-tools-redis
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
@@ -159,7 +152,6 @@ services:
       - "4571:4571"
       - "8999:8080"
     environment:
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
       - SERVICES=sns,sqs
       - DEBUG=${DEBUG- }
       - DOCKER_HOST=unix:///var/run/docker.sock
