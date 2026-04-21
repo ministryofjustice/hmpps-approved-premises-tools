@@ -10,7 +10,7 @@ The tool manages local instances of the following:
 * CAS1, CAS2 or CAS3 UI - Either via docker or node (to run local code)
 * Postgres - Used by the API
 * Redis - Used by the UI and API
-* Wiremock - Proxies all requests to upstream services, allowing us to selectively mock responses
+* Wiremock - Can optionally be used as a proxy for all upstream requests, allowing us to selectively mock responses
 * Localstack - Provides SQS for the API
 
 All other upstream services (e.g. hmpps-auth, prisoner api etc.) are provided by the [Cloud Platform's](https://user-guide.cloud-platform.service.justice.gov.uk/) 'Dev' environment
@@ -83,7 +83,7 @@ A [sync-secrets.sh](bin/sync-secrets.sh) script is provided to sync secrets from
 
 ## Wiremock
 
-All requests to upstream services are proxied by wiremock. Mocks can be configured for specific requests. For more information, [click here](./wiremock/README.md)
+By default, Wiremock is not used as it can have some performance impacts. It can be configured as a middle man between the API and upstream services, allowing requests to be selectively mocked. For more information, [click here](./wiremock/README.md)
 
 ## Known Limitations
 
