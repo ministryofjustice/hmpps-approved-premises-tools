@@ -1,7 +1,7 @@
 services:
 
   api:
-    image: quay.io/hmpps/hmpps-approved-premises-api:latest
+    image: ghcr.io/ministryofjustice/hmpps-approved-premises-api:latest
     container_name: ap-tools-api
     pull_policy: always
     depends_on:
@@ -36,7 +36,7 @@ services:
   # Only one of the following frontends is used, this is controlled by tilt via the tiltfile
 
   cas1-ui:
-    image: quay.io/hmpps/hmpps-approved-premises-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-approved-premises-ui:latest
     container_name: ap-tools-cas1-ui
     pull_policy: always
     depends_on:
@@ -54,7 +54,7 @@ services:
     entrypoint: "node dist/server.js | bunyan"
 
   cas2-ui:
-    image: quay.io/hmpps/hmpps-community-accommodation-tier-2-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-community-accommodation-tier-2-ui:latest
     container_name: ap-tools-cas2-ui
     pull_policy: always
     depends_on:
@@ -90,7 +90,7 @@ services:
     entrypoint: "node dist/server.js | bunyan"
 
   cas3-ui:
-    image: quay.io/hmpps/hmpps-temporary-accommodation-ui:latest
+    image: ghcr.io/ministryofjustice/hmpps-temporary-accommodation-ui:latest
     container_name: ap-tools-cas3-ui
     pull_policy: always
     depends_on:

@@ -15,7 +15,7 @@ The tool manages local instances of the following:
 
 All other upstream services (e.g. hmpps-auth, prisoner api etc.) are provided by the [Cloud Platform's](https://user-guide.cloud-platform.service.justice.gov.uk/) 'Dev' environment
 
-We use tilt to start all required components. Tilt uses a [tiltfile](tilefile) to decide what to do, and this delegates to a [docker-compose.yml](docker-compose.yml) file for docker managed components.
+We use tilt to start all required components. Tilt uses a [tiltfile](tiltfile) to decide what to do, and this delegates to a [docker-compose.yml](docker-compose.yml) file for docker managed components.
 
 As this project was created to support the approved premises project (CAS1), we refer to it as the Approved Premises Tools (AP Tools), but it is used for CAS 1, 2 & 3.
 
