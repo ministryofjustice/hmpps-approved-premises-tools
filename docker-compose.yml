@@ -145,7 +145,7 @@ services:
       - "6379:6379"
 
   localstack:
-    image: localstack/localstack:3.4.0
+    image: localstack/localstack:community-archive
     container_name: ap-tools-localstack
     ports:
       - "4566:4566"
