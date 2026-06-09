@@ -57,6 +57,11 @@ ap-tools server start --cas2v2
 ap-tools server start --cas3
 ```
 
+To run the API without a UI
+```bash
+ap-tools server start --local-api --no-ui
+```
+
 To stop ap-tools, use the following which will prompt
 
 ```bash
