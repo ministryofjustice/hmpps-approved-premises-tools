@@ -11,6 +11,7 @@ script_dir="$(pwd)"
 . "$script_dir"/utils/override_ui_props_with_local_ui_props.sh
 
 local_ui=0
+no_ui=0
 local_api=0
 cas1=0
 cas2=0
@@ -22,6 +23,9 @@ do
    case $1 in
     --local-ui)
       local_ui=1
+      ;;
+    --no-ui)
+      no_ui=1
       ;;
     --local-api)
       local_api=1
@@ -42,8 +46,8 @@ do
   shift
 done
 
-if [[ ($cas1 -eq 0 ) && ($cas2 -eq 0 ) && ($cas2v2 -eq 0 ) && ($cas3 -eq 0 ) ]]; then
-  echo "Must specify either --cas1, --cas2, --cas2v2 or --cas3 on the command line"
+if [[ ($no_ui -eq 0) && ($cas1 -eq 0 ) && ($cas2 -eq 0 ) && ($cas2v2 -eq 0 ) && ($cas3 -eq 0 ) ]]; then
+  echo "Must specify either --no-ui, --cas1, --cas2, --cas2v2 or --cas3 on the command line"
   exit 1
 fi
 
