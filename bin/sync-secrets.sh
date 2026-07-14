@@ -45,6 +45,7 @@ ONEPASS_TAG=cas_managed
 readonly AP_REPOS=(
   "hmpps-approved-premises-ui"
   "hmpps-approved-premises-api"
+  "hmpps-community-accommodation-tier-2-bail-ui"
 )
 
 # shellcheck disable=SC2034
